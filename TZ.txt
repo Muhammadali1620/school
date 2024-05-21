@@ -1,0 +1,218 @@
+Model
+    User
+        First Name CHF
+        Last Name CHF
+        Gender BF or INTF
+        Date Of Birth DF
+        Group FK Group PROTECT
+        Religion FK Religion
+        E-Mail EF
+        Phone CHF
+        Short BIO TF #O'zi xaqida
+        IMG IMGF
+        Status FK Status PROTECT or INTF #Teacher, Student Admin
+        Adress CHF
+        Payment DF
+        Subject FK Subject PROTECT #Fan
+        updated_at
+    
+    Library
+        name CHF
+        Class FK Class
+        Witter CHF or FK
+        book
+        Subject CHF
+        Uploade Date DF     
+        Published at DF
+        created_at DTF
+
+    Teachers Payment History
+        user FK User
+        is paid BF
+        amount DecF
+
+    Lesson
+        teacher FK User
+        title CHF
+        text TF
+        Subject FK
+        Section FK
+        Schedule Class
+        Start Date DF
+        End Date DF
+        Subject FK Subject
+
+    Schedule
+        Subject FK
+        Section FK
+        Schedule Class
+        Start Time TiF
+        End Time TiF
+        Date DF
+        Subject FK Subject
+
+    Exam
+        teacher FK User
+        title CHF
+        text TF
+        Subject FK
+        Section FK
+        Schedule Class
+        Start Time TiF
+        End Time TiF
+        Date DF
+        Subject FK Subject
+
+    Grade Exam
+        teacher FK User
+        student FK User
+        text TF
+        exam FK Exam
+        ball INTF
+        passed BF
+
+    Grade Lesson
+        teacher FK User
+        student FK User
+        lesson FK Lesson
+        text TF
+        ball INTF
+        passed BF
+
+    Expenses
+        user FK User
+        is_paid BF
+        Date DF
+        price DecF  or Due
+
+    Subject
+        title CHF #fan nomi
+        Class FK Class
+        Subject FK Subject
+        slug
+
+    Message
+        user FK User
+        title CHF
+        recipient CHF
+        text TF       
+
+    Contact
+        user FK User
+        title CHF
+        text TF   
+
+    Status
+        title CHF #status nomi
+        slug
+
+    Section
+        title CHF
+        slug
+
+    Class
+        number INTF
+
+    Religion
+        title CHF
+        slug
+
+    Group
+        name CHF
+        Teacher FK User
+
+
+
+Apps
+    user
+        User
+        Religion
+
+    contact
+        Notification
+        Message
+
+    Tasks
+        Exam
+        Exam Result
+        Lesson
+        Result Exam
+        Result Lesson
+
+    AdditionalTask
+        Additional
+    
+    payment
+        Teacher Parent History
+        Expenses
+    
+    group
+        Attendence
+        Group
+        Class
+        Section
+        Status
+        Subject
+        Schedule
+
+
+
+Forms
+    Create teacher(User)
+        exsist
+            Status
+            Occupation
+
+    Create Student(User)
+        exsist
+            Status
+            Subject
+            Occupation
+
+    Create Parent(User)
+        exsist
+            Status
+            Subject
+            Class
+            Section
+            Admission ID
+
+    Create Book(Library)
+        fields
+            all
+
+    Create Expenses(Expenses)
+        fields
+            all
+
+    Create Lesson(Lesson)
+        exsist
+            teacher
+    
+    Create Exam(Exam)
+        exsist
+            teacher
+
+    Create Schedule(Schedule)
+        fields
+            all
+    
+    Create Grade Lesson(Grade Lesson)
+        fields
+            ball
+            text
+            passed
+    
+    Create Grade Exam(Grade Exam)
+        fields
+            ball
+            text
+            passed
+    
+    Create Contact(Contact)
+        exsist
+            user
+    
+    Create Message(Message)
+        exsist
+            user
