@@ -1,16 +1,17 @@
 from django.db import models
 from apps.users.models import CustomUser
 from django.core.exceptions import ValidationError
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 
 class Payment(models.Model):
     student = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True, limit_choices_to={'status': CustomUser.StatusChoices.student.value},
-                                related_name='student_payment', related_query_name='student_payment')
+                                related_name='student_payments', related_query_name='student_payments')
     teacher = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True, limit_choices_to={'status': CustomUser.StatusChoices.teacher.value},
-                                related_name='teacher_payment', related_query_name='teacher_payment', )
-    year = models.PositiveSmallIntegerField()
-    month = models.PositiveSmallIntegerField()
-    in_percent = models.BooleanField(default=False)
+                                related_name='teacher_payments', related_query_name='teacher_payments', )
+    month = models.PositiveSmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(12)])
+    year = models.PositiveSmallIntegerField(validators=[MinValueValidator(2020), MaxValueValidator(3000)])
+    in_percent = models.PositiveSmallIntegerField(default=False)
     slelery = models.DecimalField(max_digits=20, decimal_places=2)
 
     created_at = models.DateTimeField(auto_now_add=True)

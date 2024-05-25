@@ -2,16 +2,19 @@ from django.db import models
 from apps.groups.services import normalize_text
 from apps.users.models import CustomUser
 from django.utils.timezone import now
+from django.core.exceptions import ValidationError
 
 
 class Subject(models.Model):
     name = models.CharField(max_length=70)
-    slug = models.SlugField(unique=True)
+    slug = models.SlugField(max_length=70, unique=True)
     desc = models.TextField(max_length=500)
-    price = models.DecimalField(max_digits=20, decimal_places=2)
+    price = models.DecimalField(max_digits=20, decimal_places=2, help_text='Add in UZS')
+
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.title
+        return self.name
     
     @classmethod
     def get_normalize_fields(cls):
@@ -26,28 +29,37 @@ class Subject(models.Model):
 class StudentGroup(models.Model):
 
     class Weekdays(models.IntegerChoices):
-        su = 0, 'Sunday'
-        mo = 1, 'Monday'
-        tu = 2, 'Tuesday'
-        we = 3, 'Wednesday'
-        th = 4, 'Thursday'
-        fr = 5, 'Friday'
-        sa = 6, 'Saturday'
+        mo = 0, 'Monday'
+        tu = 1, 'Tuesday'
+        we = 2, 'Wednesday'
+        th = 3, 'Thursday'
+        fr = 4, 'Friday'
+        sa = 5, 'Saturday'
+        su = 6, 'Sunday'
 
     teacher = models.ForeignKey(CustomUser, on_delete=models.PROTECT, limit_choices_to={'status': CustomUser.StatusChoices.teacher.value},
-                                related_name='group', related_query_name='group')
+                                related_name='groups', related_query_name='groups')
     subject = models.ForeignKey(Subject, on_delete=models.PROTECT,
-                                related_name='group', related_query_name='group')
+                                related_name='groups', related_query_name='groups')
     start_time = models.TimeField()
     end_time = models.TimeField()
     week_days = models.PositiveSmallIntegerField(choices=Weekdays.choices)
 
     created_at = models.DateTimeField(auto_now_add=True)
 
+    def clean(self):
+        if self.end_time <= self.start_time:
+            raise ValueError({'end_time': 'End time must greater than start time.'})
+        if StudentGroup.objects.filter(teacher_id=self.teacher.pk, week_days=self.week_days).filter(
+            models.Q(start_time__range=(self.start_time, self.end_time))
+            |
+            models.Q(end_time__range=(self.start_time, self.end_time))
+        ).exists():
+            raise ValidationError(f"{self.teacher} o'qituvchining [{self.start_time}~{self.end_time}] vaqt oralig'ida darsi bor")
+
     def __str__(self):
         return self.week_days
     
-
 
 class Attendence(models.Model):
     student = models.ForeignKey(CustomUser, on_delete=models.CASCADE, limit_choices_to={'status': CustomUser.StatusChoices.student.value},

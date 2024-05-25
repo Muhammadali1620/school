@@ -3,6 +3,9 @@ from apps.groups.services import normalize_text
 from apps.users.managers import CustomUserManager
 from django.contrib.auth.models import AbstractUser
 from apps.users.validators import phone_validate
+from django.core.exceptions import ValidationError
+from django.core.validators import MinValueValidator
+from ckeditor5.fields import RichTextField
 
 
 # class Religion(models.Model):
@@ -20,16 +23,16 @@ class CustomUser(AbstractUser):
         man = 'MAN'
         woman = 'WOMAN'
 
-    class StatusChoices(models.TextChoices):
-        admin = 'admin'
-        teacher = 'teacher'
-        student = 'student'
-        perent = 'perent'
+    class StatusChoices(models.IntegerChoices):
+        admin = 1, 'admin'
+        teacher = 2, 'teacher'
+        student = 3, 'student'
+        perent = 4, 'perent'
     
     username = None
     objects = CustomUserManager()
 
-    status = models.CharField(max_length=20, choices=StatusChoices.choices)
+    status = models.PositiveSmallIntegerField(choices=StatusChoices.choices)
     phone_number = models.CharField(max_length=13, validators=[phone_validate], unique=True)
     email = models.EmailField(unique=True)
     first_name = models.CharField(max_length=70)
@@ -40,14 +43,14 @@ class CustomUser(AbstractUser):
     gender = models.CharField(max_length=20, choices=GenderChoices.choices)
     date_of_birth = models.DateField()
     student_group = models.ForeignKey('groups.StudentGroup', on_delete=models.PROTECT, blank=True, null=True,
-                              related_name='group_users', related_query_name='group_users')
+                              related_name='students', related_query_name='students')
     # subject = models.ForeignKey(Subject, on_delete=models.PROTECT,
     #                             related_name='sbject_users', related_query_name='sbject_users')
-    bio = models.TextField(max_length=1500)
+    bio = RichTextField()
     child = models.ForeignKey('self', on_delete=models.CASCADE, blank=True, null=True)
-    payment = models.DecimalField(max_digits=20, decimal_places=2)
-    selary = models.DecimalField(default=0, max_digits=20, decimal_places=2)
-    image = models.ImageField(upload_to='user/student')
+    selary = models.DecimalField(default=0, max_digits=20, decimal_places=2, help_text='add in UZS',
+                                 validators=[MinValueValidator(0)])
+    image = models.ImageField(upload_to='user/student', blank=True, null=True)
     zip_code = models.PositiveSmallIntegerField(null=True, blank=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
@@ -56,8 +59,16 @@ class CustomUser(AbstractUser):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name', 'last_name']
 
-    def __str__(self):
-        return self.email
+    def clean(self):
+        super().clean()
+        print(self.StatusChoices.teacher)
+        print(self.status)
+        if self.status == self.StatusChoices.teacher.value and self.selary <= 0:
+            raise ValidationError({'selary':'A teacher should have a salary'})
+        if self.status == self.StatusChoices.student.value and self.student_group is None:
+            raise ValidationError('StudentGroup must be provided for student')
+        if self.status == self.StatusChoices.perent.value and self.child is None:
+            raise ValidationError('Child must be provided for Pare nt')  
     
     class Meta:
         ordering = ['-pk']
@@ -69,3 +80,6 @@ class CustomUser(AbstractUser):
     def save(self, *args, **kwargs):
         normalize_text(self)
         super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f'{self.get_status_display()}: {self.first_name} {self.last_name}'
