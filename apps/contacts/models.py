@@ -2,6 +2,7 @@ from django.db import models
 from apps.groups.services import normalize_text
 from apps.tasks.models import ExamResult
 from apps.users.models import CustomUser
+from django_ckeditor_5.fields import CKEditor5Field
 
 
 class Notification(models.Model):
@@ -17,7 +18,7 @@ class Notification(models.Model):
     notification_type = models.PositiveSmallIntegerField(choices=Type.choices)
     is_viewed = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
-    content = models.CharField(max_length=500)
+    content = CKEditor5Field('Text', config_name='extends')
 
     student = models.ForeignKey('users.CustomUser', on_delete=models.CASCADE, blank=True, null=True)
     exam_result = models.ForeignKey(ExamResult, on_delete=models.CASCADE, blank=True, null=True)

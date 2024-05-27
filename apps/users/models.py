@@ -5,7 +5,7 @@ from django.contrib.auth.models import AbstractUser
 from apps.users.validators import phone_validate
 from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator
-from ckeditor5.fields import RichTextField
+from django_ckeditor_5.fields import CKEditor5Field
 
 
 # class Religion(models.Model):
@@ -46,7 +46,7 @@ class CustomUser(AbstractUser):
                               related_name='students', related_query_name='students')
     # subject = models.ForeignKey(Subject, on_delete=models.PROTECT,
     #                             related_name='sbject_users', related_query_name='sbject_users')
-    bio = RichTextField()
+    bio = CKEditor5Field('Text', config_name='extends', null=True)
     child = models.ForeignKey('self', on_delete=models.CASCADE, blank=True, null=True)
     selary = models.DecimalField(default=0, max_digits=20, decimal_places=2, help_text='add in UZS',
                                  validators=[MinValueValidator(0)])

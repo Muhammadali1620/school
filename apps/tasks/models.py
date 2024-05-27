@@ -2,6 +2,7 @@ from django.db import models
 from apps.groups.models import Subject
 from apps.users.models import CustomUser
 from django.core.validators import MinValueValidator
+from django_ckeditor_5.fields import CKEditor5Field
 
 
 class Exam(models.Model):
@@ -10,7 +11,7 @@ class Exam(models.Model):
     ordering = models.PositiveSmallIntegerField(validators=[MinValueValidator(1)])
     title = models.CharField(max_length=70)
     slug = models.SlugField(unique=True)
-    desc = models.TextField(max_length=500)
+    desc = CKEditor5Field('Text', config_name='extends')
     limithour = models.PositiveSmallIntegerField()
 
     class Meta:
@@ -20,11 +21,11 @@ class Exam(models.Model):
         return self.title
 
 
-class LessonModel(models.Model):
+class Lesson(models.Model):
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
     ordering = models.PositiveIntegerField(default=1)
     title = models.CharField(max_length=255)
-    desc = models.TextField(max_length=1200)
+    desc = CKEditor5Field('Text', config_name='extends')
 
     class Meta:
         unique_together = ('ordering', 'subject')
@@ -39,7 +40,7 @@ class ExamResult(models.Model):
     exam = models.ForeignKey(Exam, on_delete=models.SET_NULL, null=True,
                              related_name='exam_results', related_query_name='exam_results')
     precent = models.PositiveSmallIntegerField()
-    comment = models.TextField(max_length=300)
+    comment = CKEditor5Field('Text', config_name='extends')
 
     def __str__(self):
         return self.precent 

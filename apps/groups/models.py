@@ -3,12 +3,13 @@ from apps.groups.services import normalize_text
 from apps.users.models import CustomUser
 from django.utils.timezone import now
 from django.core.exceptions import ValidationError
+from django_ckeditor_5.fields import CKEditor5Field
 
 
 class Subject(models.Model):
     name = models.CharField(max_length=70)
     slug = models.SlugField(max_length=70, unique=True)
-    desc = models.TextField(max_length=500)
+    desc = CKEditor5Field('Text', config_name='extends')
     price = models.DecimalField(max_digits=20, decimal_places=2, help_text='Add in UZS')
 
     created_at = models.DateTimeField(auto_now_add=True)
@@ -38,9 +39,9 @@ class StudentGroup(models.Model):
         su = 6, 'Sunday'
 
     teacher = models.ForeignKey(CustomUser, on_delete=models.PROTECT, limit_choices_to={'status': CustomUser.StatusChoices.teacher.value},
-                                related_name='groups', related_query_name='groups')
+                                related_name='teacher_groups', related_query_name='teacher_groups')
     subject = models.ForeignKey(Subject, on_delete=models.PROTECT,
-                                related_name='groups', related_query_name='groups')
+                                related_name='student_groups', related_query_name='student_groups')
     start_time = models.TimeField()
     end_time = models.TimeField()
     week_days = models.PositiveSmallIntegerField(choices=Weekdays.choices)
