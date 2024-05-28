@@ -1,5 +1,5 @@
 from django.db import models
-from apps.groups.models import Subject
+from apps.subjects.models import Subject
 from apps.groups.services import normalize_text
 from django_ckeditor_5.fields import CKEditor5Field
 
@@ -9,7 +9,7 @@ class AdditionalTask(models.Model):
                                 related_name='tasks', related_query_name='tasks')
     title = models.CharField(max_length=70)
     slug = models.SlugField(unique=True)
-    desc = CKEditor5Field('Text', config_name='extends')
+    desc = models.CharField(max_length=255)
     url = models.URLField(blank=True, null=True)
 
     def __str__(self):

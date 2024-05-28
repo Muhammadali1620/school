@@ -44,11 +44,9 @@ class CustomUser(AbstractUser):
     date_of_birth = models.DateField()
     student_group = models.ForeignKey('groups.StudentGroup', on_delete=models.PROTECT, blank=True, null=True,
                               related_name='students', related_query_name='students')
-    # subject = models.ForeignKey(Subject, on_delete=models.PROTECT,
-    #                             related_name='sbject_users', related_query_name='sbject_users')
-    bio = CKEditor5Field('Text', config_name='extends', null=True)
+    bio = models.TextField(max_length=1200)
     child = models.ForeignKey('self', on_delete=models.CASCADE, blank=True, null=True)
-    selary = models.DecimalField(default=0, max_digits=20, decimal_places=2, help_text='add in UZS',
+    salary = models.DecimalField(default=0, max_digits=20, decimal_places=2, help_text='add in UZS',
                                  validators=[MinValueValidator(0)])
     image = models.ImageField(upload_to='user/student', blank=True, null=True)
     zip_code = models.PositiveSmallIntegerField(null=True, blank=True)
@@ -61,10 +59,8 @@ class CustomUser(AbstractUser):
 
     def clean(self):
         super().clean()
-        print(self.StatusChoices.teacher)
-        print(self.status)
-        if self.status == self.StatusChoices.teacher.value and self.selary <= 0:
-            raise ValidationError({'selary':'A teacher should have a salary'})
+        if self.status == self.StatusChoices.teacher.value and self.salary <= 0:
+            raise ValidationError({'salary':'A teacher should have a salary'})
         if self.status == self.StatusChoices.student.value and self.student_group is None:
             raise ValidationError('StudentGroup must be provided for student')
         if self.status == self.StatusChoices.perent.value and self.child is None:

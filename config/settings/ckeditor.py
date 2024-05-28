@@ -1,5 +1,9 @@
 customColorPalette = [
         {
+            'color': 'hsl(0, 0%, 0%)',
+            'label': 'Black'
+        },
+        {
             'color': 'hsl(4, 90%, 58%)',
             'label': 'Red'
         },
