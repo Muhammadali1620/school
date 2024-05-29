@@ -15,6 +15,7 @@ ALLOWED_HOSTS = []
 
 
 INSTALLED_APPS = [
+    'jazzmin',
     'modeltranslation',
 
     'django.contrib.admin',
