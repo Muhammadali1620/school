@@ -4,4 +4,4 @@ from apps.subjects.models import Subject
 
 @register(Subject)
 class SubjectTranslationOptions(TranslationOptions):
-    fields = ('name',)
+    fields = ('name', 'desc')

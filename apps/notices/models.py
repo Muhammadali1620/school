@@ -16,15 +16,13 @@ class Notification(models.Model):
         WARNING = 6, "WARNING"
 
     notification_type = models.PositiveSmallIntegerField(choices=Type.choices)
-    is_viewed = models.BooleanField(default=False)
-    created_at = models.DateTimeField(auto_now_add=True)
-    content = CKEditor5Field('Text', config_name='extends')
+    
+    content = CKEditor5Field('content', config_name='extends')
 
     student = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True)
     exam_result = models.ForeignKey(ExamResult, on_delete=models.CASCADE, blank=True, null=True)
 
-    viewed = models.BooleanField(default=False)
-
+    is_viewed = models.BooleanField(default=False)
     viewed_at = models.DateTimeField()
     created_at = models.DateTimeField(auto_now_add=True)
 
