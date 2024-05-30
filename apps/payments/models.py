@@ -12,8 +12,8 @@ class Payment(models.Model):
                                 related_name='teacher_payments', related_query_name='teacher_payments', )
     month = models.PositiveSmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(12)])
     year = models.PositiveSmallIntegerField(validators=[MinValueValidator(2020), MaxValueValidator(3000)])
-    in_percent = models.PositiveSmallIntegerField(default=False)
-    slelery = models.DecimalField(max_digits=20, decimal_places=2)
+    in_percent = models.PositiveSmallIntegerField()
+    salary = models.DecimalField(max_digits=20, decimal_places=2)
 
     created_at = models.DateTimeField(auto_now_add=True)
 

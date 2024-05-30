@@ -14,22 +14,20 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Lesson',
+            name='AdditionalTask',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('ordering', models.PositiveIntegerField(default=1)),
-                ('title', models.CharField(max_length=255)),
-                ('title_uz', models.CharField(max_length=255, null=True)),
-                ('title_en', models.CharField(max_length=255, null=True)),
-                ('title_ru', models.CharField(max_length=255, null=True)),
+                ('title', models.CharField(max_length=70)),
+                ('title_uz', models.CharField(max_length=70, null=True)),
+                ('title_en', models.CharField(max_length=70, null=True)),
+                ('title_ru', models.CharField(max_length=70, null=True)),
+                ('slug', models.SlugField(unique=True)),
                 ('desc', models.CharField(max_length=255)),
                 ('desc_uz', models.CharField(max_length=255, null=True)),
                 ('desc_en', models.CharField(max_length=255, null=True)),
                 ('desc_ru', models.CharField(max_length=255, null=True)),
-                ('subject', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='subjects.subject')),
+                ('url', models.URLField(blank=True, null=True)),
+                ('subject', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='tasks', related_query_name='tasks', to='subjects.subject')),
             ],
-            options={
-                'unique_together': {('ordering', 'subject')},
-            },
         ),
     ]

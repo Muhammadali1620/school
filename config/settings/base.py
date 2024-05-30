@@ -30,6 +30,7 @@ INSTALLED_APPS = [
 ]
 
 INSTALLED_APPS += [
+    'apps.additionals.apps.AdditionalsConfig',
     'apps.attendances.apps.AttendancesConfig',
     'apps.general.apps.GeneralConfig',
     'apps.payments.apps.PaymentsConfig',

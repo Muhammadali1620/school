@@ -42,8 +42,6 @@ class CustomUser(AbstractUser):
     address = models.CharField(max_length=300)
     gender = models.CharField(max_length=20, choices=GenderChoices.choices)
     date_of_birth = models.DateField()
-    student_group = models.ForeignKey('groups.StudentGroup', on_delete=models.PROTECT, blank=True, null=True,
-                              related_name='students', related_query_name='students')
     bio = models.TextField(max_length=1200)
     child = models.ForeignKey('self', on_delete=models.CASCADE, blank=True, null=True)
     salary = models.DecimalField(default=0, max_digits=20, decimal_places=2, help_text='add in UZS',
