@@ -88,7 +88,7 @@ local_settings.py
 db.sqlite3
 venv
 media
-*/migrations/0*
 gitpush.py
 .vscode
 open.py
+apps/*/migrations/0*

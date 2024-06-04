@@ -3,5 +3,5 @@ from .views import home, SubjectListView, SubjectDetailView
 
 urlpatterns = [
     path('', SubjectListView.as_view(), name='home'),
-    path('/detail/<int:subject_id>/', SubjectDetailView.as_view(), name='subject-detail'),
+    path('detail/<int:subject_id>/', SubjectDetailView.as_view(), name='subject-detail'),
 ]

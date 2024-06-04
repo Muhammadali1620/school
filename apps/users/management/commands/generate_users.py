@@ -4,7 +4,7 @@ from apps.users.models import CustomUser
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
-        user1 = CustomUser.objects.create(
+        teacher1 = CustomUser.objects.create(
             status=CustomUser.StatusChoices.teacher,
             phone_number="+998901234567",
             email="teacher1@example.com",
@@ -17,8 +17,34 @@ class Command(BaseCommand):
             date_of_birth="1980-01-01",
             salary=100000.00,
             bio="Experienced teacher with 5 years of experience in teaching mathematics.")
+        
+        teacher2 = CustomUser.objects.create(
+            email='teacher@example.com',
+            first_name='Teacher',
+            last_name='User',
+            status=CustomUser.StatusChoices.teacher,
+            phone_number='+998997654321',
+            gender=CustomUser.GenderChoices.woman,
+            date_of_birth='1990-01-01',
+            address='Samarkand',
+            bio='...',
+            salary=5000000,
+        )
 
-        user2 = CustomUser.objects.create(
+        teacher3 = CustomUser.objects.create(
+            email='teacher3@example.com',
+            first_name='Teacher3',
+            last_name='User',
+            status=CustomUser.StatusChoices.teacher,
+            phone_number='+998992345678',
+            gender=CustomUser.GenderChoices.man,
+            date_of_birth='2001-01-01',
+            address='Termez',
+            bio='...',
+            salary=4500000
+        )
+
+        student1 = CustomUser.objects.create(
             status=CustomUser.StatusChoices.student,
             phone_number="+998907654321",
             email="student1@example.com",
@@ -30,8 +56,32 @@ class Command(BaseCommand):
             gender=CustomUser.GenderChoices.woman,
             date_of_birth="2000-01-01",
             bio="Hardworking student with a strong interest in science.")
+        
+        student2 = CustomUser.objects.create(
+            email='student@example.com',
+            first_name='Student',
+            last_name='User',
+            status=CustomUser.StatusChoices.student,
+            phone_number='+998993216547',
+            gender=CustomUser.GenderChoices.man,
+            date_of_birth='2000-01-01',
+            address='Bukhara',
+            bio='...',
+                )
+        
+        student3 = CustomUser.objects.create(
+            email='student3@example.com',
+            first_name='Student',
+            last_name='User',
+            status=CustomUser.StatusChoices.student,
+            phone_number='+998995432101',
+            gender=CustomUser.GenderChoices.woman,
+            date_of_birth='1970-01-01',
+            address='Khiva',
+            bio='...',
+        )
 
-        user3 = CustomUser.objects.create(
+        admin1 = CustomUser.objects.create(
             status=CustomUser.StatusChoices.admin,
             phone_number="+998909876543",
             email="admin1@example.com",
@@ -43,5 +93,30 @@ class Command(BaseCommand):
             gender=CustomUser.GenderChoices.man,
             date_of_birth="1970-01-01",
             bio="Administrator of the system.")
+
+        admin2 = CustomUser.objects.create(
+            email='admin@example.com',
+            first_name='Admin',
+            last_name='User',
+            status=CustomUser.StatusChoices.admin,
+            phone_number='+998991234567',
+            gender=CustomUser.GenderChoices.man,
+            date_of_birth='1980-01-01',
+            address='Tashkent',
+            bio='...',
+            salary=0,
+        )
+
+        admin3 = CustomUser.objects.create(
+            email='admin3@example.com',
+            first_name='admin2',
+            last_name='User',
+            status=CustomUser.StatusChoices.admin,
+            phone_number='+998996543210',
+            gender=CustomUser.GenderChoices.woman,
+            date_of_birth='1985-01-01',
+            address='Navoi',
+            bio='...',
+        )
 
         self.stdout.write(self.style.SUCCESS(f"{CustomUser.objects.count()}-users created"))

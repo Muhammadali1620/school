@@ -1,5 +1,10 @@
 import os
 
+print('1. migration\n2. no migration')
+migration_db = input('migration db?: ')
+
+if migration_db == '1':
+    os.system("python migration_db.py")
 
 os.system("python manage.py generate_users")
 os.system("python manage.py generate_subjects")

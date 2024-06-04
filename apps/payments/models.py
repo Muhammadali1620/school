@@ -25,4 +25,4 @@ class Payment(models.Model):
         unique_together = ('year', 'month', 'student', 'teacher')
 
     def __str__(self):
-        return self.in_percent
+        return str(self.in_percent)

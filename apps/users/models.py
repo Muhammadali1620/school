@@ -27,7 +27,7 @@ class CustomUser(AbstractUser):
         admin = 1, 'admin'
         teacher = 2, 'teacher'
         student = 3, 'student'
-        perent = 4, 'perent'
+        parent = 4, 'parent'
     
     username = None
     objects = CustomUserManager()
@@ -49,7 +49,6 @@ class CustomUser(AbstractUser):
     image = models.ImageField(upload_to='user/student', blank=True, null=True)
     zip_code = models.PositiveSmallIntegerField(null=True, blank=True)
 
-    created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     USERNAME_FIELD = 'email'
@@ -61,7 +60,7 @@ class CustomUser(AbstractUser):
             raise ValidationError({'salary':'A teacher should have a salary'})
         if self.status == self.StatusChoices.student.value and self.student_group is None:
             raise ValidationError('StudentGroup must be provided for student')
-        if self.status == self.StatusChoices.perent.value and self.child is None:
+        if self.status == self.StatusChoices.parent.value and self.child is None:
             raise ValidationError('Child must be provided for Pare nt')  
     
     class Meta:
