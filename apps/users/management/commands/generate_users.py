@@ -18,6 +18,8 @@ class Command(BaseCommand):
             salary=100000.00,
             bio="Experienced teacher with 5 years of experience in teaching mathematics.")
         
+        teacher1.groups.set([2])
+        
         teacher2 = CustomUser.objects.create(
             email='teacher@example.com',
             first_name='Teacher',
@@ -30,6 +32,8 @@ class Command(BaseCommand):
             bio='...',
             salary=5000000,
         )
+        
+        teacher2.groups.set([2])
 
         teacher3 = CustomUser.objects.create(
             email='teacher3@example.com',
@@ -43,6 +47,8 @@ class Command(BaseCommand):
             bio='...',
             salary=4500000
         )
+        
+        teacher3.groups.set([2])
 
         student1 = CustomUser.objects.create(
             status=CustomUser.StatusChoices.student,
@@ -57,6 +63,8 @@ class Command(BaseCommand):
             date_of_birth="2000-01-01",
             bio="Hardworking student with a strong interest in science.")
         
+        student1.groups.set([1])
+        
         student2 = CustomUser.objects.create(
             email='student@example.com',
             first_name='Student',
@@ -69,6 +77,8 @@ class Command(BaseCommand):
             bio='...',
                 )
         
+        student2.groups.set([1])
+        
         student3 = CustomUser.objects.create(
             email='student3@example.com',
             first_name='Student',
@@ -80,6 +90,8 @@ class Command(BaseCommand):
             address='Khiva',
             bio='...',
         )
+        
+        student3.groups.set([1])
 
         admin1 = CustomUser.objects.create(
             status=CustomUser.StatusChoices.admin,
@@ -93,6 +105,8 @@ class Command(BaseCommand):
             gender=CustomUser.GenderChoices.man,
             date_of_birth="1970-01-01",
             bio="Administrator of the system.")
+        
+        admin1.groups.set([3])
 
         admin2 = CustomUser.objects.create(
             email='admin@example.com',
@@ -106,6 +120,8 @@ class Command(BaseCommand):
             bio='...',
             salary=0,
         )
+        
+        admin2.groups.set([3])
 
         admin3 = CustomUser.objects.create(
             email='admin3@example.com',
@@ -118,5 +134,7 @@ class Command(BaseCommand):
             address='Navoi',
             bio='...',
         )
+        
+        admin1.groups.set([3])
 
         self.stdout.write(self.style.SUCCESS(f"{CustomUser.objects.count()}-users created"))

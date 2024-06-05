@@ -1,30 +1,23 @@
 from django.core.management import BaseCommand
-from apps.groups.models import StudentGroup
-from apps.subjects.models import Subject
-from apps.users.models import CustomUser
+from django.contrib.auth.models import Group
+from django.contrib.auth.models import Permission
 
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
-        group1 = StudentGroup.objects.create(
-            teacher=CustomUser.objects.get(first_name="John"),
-            subject=Subject.objects.get(name="Математика"),
-            start_time="10:00",
-            end_time="12:00",
-            week_days=[StudentGroup.WeekDays.mo, StudentGroup.WeekDays.we, StudentGroup.WeekDays.fr])
+        student_group = Group.objects.create(
+            name='student',
+            )
+        student_group.permissions.set([24, 52, 64])
 
-        group2 = StudentGroup.objects.create(
-            teacher=CustomUser.objects.get(first_name="John"),
-            subject=Subject.objects.get(name="История"),
-            start_time="13:00",
-            end_time="15:00",
-            week_days=[StudentGroup.WeekDays.tu, StudentGroup.WeekDays.th])
-
-        group3 = StudentGroup.objects.create(
-            teacher=CustomUser.objects.get(first_name="John"),
-            subject=Subject.objects.get(name="Биология"),
-            start_time="16:00",
-            end_time="18:00",
-            week_days=[StudentGroup.WeekDays.sa, StudentGroup.WeekDays.su])
-
-        self.stdout.write(self.style.SUCCESS(f"{StudentGroup.objects.count()}-groups created"))
+        teacher_group = Group.objects.create(
+            name='teacher',
+            )
+        teacher_group.permissions.set([21, 22, 23, 24, 25, 26, 28, 44, 48, 52, 64])
+        
+        admin_group = Group.objects.create(
+            name='admin',
+            )
+        admin_group.permissions.set(Permission.objects.all())
+        
+        self.stdout.write(self.style.SUCCESS(f"{Group.objects.count()}-groups created"))

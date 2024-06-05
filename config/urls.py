@@ -9,7 +9,7 @@ from apps.groups.views import home, set_language
 urlpatterns = [ 
     path('admin/', admin.site.urls),
     path('groups/', include('apps.groups.urls')),
-
+    path('users/', include('apps.users.urls')),
 
     path('setlang/', set_language, name='set_language'),
     path('ckeditor5/', include('django_ckeditor_5.urls'), name='ck_editor_5_upload_file'),
