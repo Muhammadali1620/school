@@ -30,8 +30,6 @@ class StudentGroup(models.Model):
     def clean(self):
         if self.end_time <= self.start_time:
             raise ValueError({'end_time': 'End time must greater than start time.'})
-
-        print(self.week_days)
         if StudentGroup.objects.filter(teacher_id=self.teacher.pk, week_days=self.week_days).filter(models.Q(start_time__range=(self.start_time, self.end_time)) 
                                                                                                     | 
                                                                                                     models.Q(end_time__range=(self.start_time, self.end_time))).exists():

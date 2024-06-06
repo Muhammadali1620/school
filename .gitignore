@@ -92,3 +92,4 @@ gitpush.py
 .vscode
 open.py
 apps/*/migrations/0*
+.idea

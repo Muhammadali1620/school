@@ -6,9 +6,11 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 
 
 class Payment(models.Model):
-    student = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, limit_choices_to={'status': CustomUser.StatusChoices.student.value},
+    student = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, blank=True, null=True,
+                                limit_choices_to={'status': CustomUser.StatusChoices.student.value},
                                 related_name='student_payments', related_query_name='student_payments')
-    teacher = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, limit_choices_to={'status': CustomUser.StatusChoices.teacher.value},
+    teacher = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, blank=True, null=True,
+                                limit_choices_to={'status': CustomUser.StatusChoices.teacher.value},
                                 related_name='teacher_payments', related_query_name='teacher_payments', )
     month = models.PositiveSmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(12)])
     year = models.PositiveSmallIntegerField(validators=[MinValueValidator(2020), MaxValueValidator(3000)])
@@ -18,7 +20,7 @@ class Payment(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def clean(self):
-        if (bool(self.student) + bool(self.student)) != 1:
+        if (bool(self.student) + bool(self.teacher)) != 1:
             raise ValidationError('bittasini tanla')
             
     class Meta:

@@ -5,7 +5,6 @@ from django.contrib.auth.models import AbstractUser
 from apps.users.validators import phone_validate
 from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator
-from django_ckeditor_5.fields import CKEditor5Field
 
 
 # class Religion(models.Model):
