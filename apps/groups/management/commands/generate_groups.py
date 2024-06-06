@@ -19,5 +19,10 @@ class Command(BaseCommand):
             name='admin',
             )
         admin_group.permissions.set(Permission.objects.all())
+
+        parent_group = Group.objects.create(
+            name='parent',
+            )
+        parent_group.permissions.set([64])
         
         self.stdout.write(self.style.SUCCESS(f"{Group.objects.count()}-groups created"))
