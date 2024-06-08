@@ -1,7 +1,10 @@
 from django.urls import path
-from .views import home, SubjectListView, SubjectDetailView
+from . import views
+
+app_name = 'student_groups'
+
 
 urlpatterns = [
-    path('', SubjectListView.as_view(), name='home'),
-    path('detail/<int:subject_id>/', SubjectDetailView.as_view(), name='subject-detail'),
+    path('all_group/', views.StudentGroupTemplateView.as_view(), name='all_group'),
+    path('add_group/', views.AddStudentGroupTemplateView.as_view(), name='add_group'),
 ]

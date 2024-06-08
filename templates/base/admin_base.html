@@ -95,9 +95,9 @@
                                 <ul class="settings-list">
                                     <li><a href="#"><i class="flaticon-user"></i>My Profile</a></li>
                                     <li><a href="#"><i class="flaticon-list"></i>Task</a></li>
-                                    <li><a href="#"><i class="flaticon-chat-comment-oval-speech-bubble-with-text-lines"></i>Message</a></li>
-                                    <li><a href="#"><i class="flaticon-gear-loading"></i>Account Settings</a></li>
-                                    <li><a href="login.html"><i class="flaticon-turn-off"></i>Log Out</a></li>
+                                    <li><a href="{% url 'notices:message' %}"><i class="flaticon-chat-comment-oval-speech-bubble-with-text-lines"></i>Message</a></li>
+                                    <li><a href="{% url 'users:account_settings' %}"><i class="flaticon-gear-loading"></i>Account Settings</a></li>
+                                    <li><a href="{% url 'users:logout' %}"><i class="flaticon-turn-off"></i>Log Out</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -269,7 +269,7 @@
                             <a href="#" class="nav-link"><i class="flaticon-classmates"></i><span>Students</span></a>
                             <ul class="nav sub-group-menu sub-group-active">
                                 <li class="nav-item">
-                                    <a href="{% url 'student_list' %}" class="nav-link menu-active"><i class="fas fa-angle-right"></i>All
+                                    <a href="{% url 'users:student_list' %}" class="nav-link menu-active"><i class="fas fa-angle-right"></i>All
                                         Students</a>
                                 </li>
                                 <li class="nav-item">
@@ -287,7 +287,7 @@
                                     class="flaticon-multiple-users-silhouette"></i><span>Teachers</span></a>
                             <ul class="nav sub-group-menu">
                                 <li class="nav-item">
-                                    <a href="{% url 'teacher_list' %}" class="nav-link"><i class="fas fa-angle-right"></i>All
+                                    <a href="{% url 'users:teacher_list' %}" class="nav-link"><i class="fas fa-angle-right"></i>All
                                         Teachers</a>
                                 </li>
                                 <li class="nav-item">
@@ -304,7 +304,7 @@
                             <a href="#" class="nav-link"><i class="flaticon-couple"></i><span>Parents</span></a>
                             <ul class="nav sub-group-menu">
                                 <li class="nav-item">
-                                    <a href="{% url 'parent_list' %}" class="nav-link"><i class="fas fa-angle-right"></i>All
+                                    <a href="{% url 'users:parent_list' %}" class="nav-link"><i class="fas fa-angle-right"></i>All
                                         Parents</a>
                                 </li>
                                 <li class="nav-item">
@@ -317,11 +317,11 @@
                             <a href="#" class="nav-link"><i class="flaticon-books"></i><span>Library</span></a>
                             <ul class="nav sub-group-menu">
                                 <li class="nav-item">
-                                    <a href="all-book.html" class="nav-link"><i class="fas fa-angle-right"></i>All
+                                    <a href="{% url 'additionals:all_additional' %}" class="nav-link"><i class="fas fa-angle-right"></i>All
                                         Book</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="add-book.html" class="nav-link"><i class="fas fa-angle-right"></i>Add New
+                                    <a href="{% url 'additionals:add_additional' %}" class="nav-link"><i class="fas fa-angle-right"></i>Add New
                                         Book</a>
                                 </li>
                             </ul>
@@ -330,54 +330,54 @@
                             <a href="#" class="nav-link"><i class="flaticon-technological"></i><span>Acconunt</span></a>
                             <ul class="nav sub-group-menu">
                                 <li class="nav-item">
-                                    <a href="all-fees.html" class="nav-link"><i class="fas fa-angle-right"></i>All Fees
+                                    <a href="{% url 'payments:all_fees' %}" class="nav-link"><i class="fas fa-angle-right"></i>All Fees
                                         Collection</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="all-expense.html" class="nav-link"><i
+                                    <a href="{% url 'payments:all_expense' %}" class="nav-link"><i
                                             class="fas fa-angle-right"></i>Expenses</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="add-expense.html" class="nav-link"><i class="fas fa-angle-right"></i>Add
+                                    <a href="{% url 'payments:add_expense' %}" class="nav-link"><i class="fas fa-angle-right"></i>Add
                                         Expenses</a>
                                 </li>
                             </ul>
                         </li>
                         <li class="nav-item sidebar-nav-item">
                             <a href="#" class="nav-link"><i
-                                    class="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler"></i><span>Class</span></a>
+                                    class="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler"></i><span>Student Group</span></a>
                             <ul class="nav sub-group-menu">
                                 <li class="nav-item">
-                                    <a href="all-class.html" class="nav-link"><i class="fas fa-angle-right"></i>All
-                                        Classes</a>
+                                    <a href="{% url 'student_groups:all_group' %}" class="nav-link"><i class="fas fa-angle-right"></i>All
+                                        Groups</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="add-class.html" class="nav-link"><i class="fas fa-angle-right"></i>Add New
-                                        Class</a>
+                                    <a href="{% url 'student_groups:add_group' %}" class="nav-link"><i class="fas fa-angle-right"></i>Add New
+                                        Group</a>
                                 </li>
                             </ul>
                         </li>
                         <li class="nav-item">
-                            <a href="all-subject.html" class="nav-link"><i
+                            <a href="{% url 'subjects:subject_list' %}" class="nav-link"><i
                                     class="flaticon-open-book"></i><span>Subject</span></a>
-                        </li>
+                        <!-- </li>
                         <li class="nav-item">
                             <a href="class-routine.html" class="nav-link"><i class="flaticon-calendar"></i><span>Class
                                     Routine</span></a>
-                        </li>
+                        </li> -->
                         <li class="nav-item">
-                            <a href="student-attendence.html" class="nav-link"><i
-                                    class="flaticon-checklist"></i><span>Attendence</span></a>
+                            <a href="{% url 'attendances:student_attendance' %}" class="nav-link"><i
+                                    class="flaticon-checklist"></i><span>Attendance</span></a>
                         </li>
                         <li class="nav-item sidebar-nav-item">
                             <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Exam</span></a>
                             <ul class="nav sub-group-menu">
                                 <li class="nav-item">
-                                    <a href="exam-schedule.html" class="nav-link"><i class="fas fa-angle-right"></i>Exam
+                                    <a href="{% url 'exams:exam_schedule' %}" class="nav-link"><i class="fas fa-angle-right"></i>Exam
                                         Schedule</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="exam-grade.html" class="nav-link"><i class="fas fa-angle-right"></i>Exam
+                                    <a href="{% url 'exams:exam_grade' %}" class="nav-link"><i class="fas fa-angle-right"></i>Exam
                                         Grades</a>
                                 </li>
                             </ul>
@@ -390,12 +390,12 @@
                             <a href="hostel.html" class="nav-link"><i class="flaticon-bed"></i><span>Hostel</span></a>
                         </li> -->
                         <li class="nav-item">
-                            <a href="notice-board.html" class="nav-link"><i
+                            <a href="{% url 'notices:notification' %}" class="nav-link"><i
                                     class="flaticon-script"></i><span>Notice</span></a>
                         </li>
                         <li class="nav-item">
-                            <a href="messaging.html" class="nav-link"><i
-                                    class="flaticon-chat"></i><span>Messeage</span></a>
+                            <a href="{% url 'notices:message' %}" class="nav-link"><i
+                                    class="flaticon-chat"></i><span>Message</span></a>
                         </li>
                         <!-- <li class="nav-item sidebar-nav-item">
                             <a href="#" class="nav-link"><i class="flaticon-menu-1"></i><span>UI Elements</span></a>
@@ -429,7 +429,7 @@
                                     class="flaticon-planet-earth"></i><span>Map</span></a>
                         </li> -->
                         <li class="nav-item">
-                            <a href="account-settings.html" class="nav-link"><i
+                            <a href="{% url 'users:account_settings' %}" class="nav-link"><i
                                     class="flaticon-settings"></i><span>Account</span></a>
                         </li>
                     </ul>
