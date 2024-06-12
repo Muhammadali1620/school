@@ -1,3 +1,5 @@
+from django.forms import BaseModelForm
+from django.http import HttpRequest, HttpResponse
 from django.views.generic import ListView, DetailView, CreateView, TemplateView
 from apps.users.models import CustomUser
 from django.contrib.auth import get_user_model
@@ -5,6 +7,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMix
 from django.contrib.auth.views import LoginView, LogoutView
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout
+from django.urls import reverse_lazy
 
 
 #<=============>Students<=============>#
@@ -13,7 +16,7 @@ class StudentListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     queryset = CustomUser.objects.filter(status=CustomUser.StatusChoices.student)
     context_object_name = 'students'
     permission_required = ('users.view_customuser')
-        
+
 
 class StudentDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
     template_name = 'student-detail.html'
@@ -52,9 +55,14 @@ class TeacherDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView)
 class TeacherRegisterView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = get_user_model()
     fields = ['first_name', 'last_name','father_name', 'mother_name', 'date_of_birth', 'email', 'phone_number', 'password',
-              'groups', 'subject', 'user_permissions', 'address', 'gender', 'salary', 'image', 'bio', 'zip_code']
+               'subject', 'address', 'gender', 'salary', 'image', 'bio', 'zip_code']
     template_name = 'add-teacher.html'
     permission_required = ('users.add_customuser')
+    success_url = reverse_lazy('users:teacher_list')
+
+    def form_valid(self, form):
+        form.instance.status = CustomUser.StatusChoices.teacher
+        return super().form_valid(form)
 
 
 class TeacherDashboardView(LoginRequiredMixin, TemplateView):

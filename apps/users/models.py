@@ -31,6 +31,8 @@ class CustomUser(AbstractUser):
     username = None
     objects = CustomUserManager()
 
+    is_spam = models.BooleanField(default=False)
+
     status = models.PositiveSmallIntegerField(choices=StatusChoices.choices)
     phone_number = models.CharField(max_length=13, validators=[phone_validate], unique=True)
     email = models.EmailField(unique=True)

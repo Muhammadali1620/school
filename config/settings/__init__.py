@@ -1,3 +1,4 @@
+from .auth import *
 from .base import *
 from .ckeditor import *
 from .database import *
