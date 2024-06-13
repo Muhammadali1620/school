@@ -1,4 +1,4 @@
-from django.views.generic import ListView, DetailView, CreateView, TemplateView, UpdateView
+from django.views.generic import ListView, DetailView, CreateView, TemplateView, UpdateView, DeleteView
 from apps.users.models import CustomUser
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
@@ -115,11 +115,21 @@ class ParentRegisterView(LoginRequiredMixin, PermissionRequiredMixin, CreateView
                'child', 'address', 'gender', 'image', 'bio', 'zip_code']
     template_name = 'admit-form.html'
     permission_required = ('users.add_customuser')
-    success_url = reverse_lazy('users:student_list')
+    success_url = reverse_lazy('users:parent_list')
 
     def form_valid(self, form):
         form.instance.status = CustomUser.StatusChoices.parent
         return super().form_valid(form)
+    
+
+class ParentUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+    model = get_user_model()
+    template_name = 'update-form.html'
+    fields = ['first_name', 'last_name','father_name', 'date_of_birth', 'email', 'phone_number', 'password',
+               'child', 'address', 'gender', 'image', 'bio', 'zip_code']
+    permission_required = ('users.change_customuser')
+    success_url = reverse_lazy('users:parent_list')
+
 
 
 class ParentDashboardView(LoginRequiredMixin, TemplateView):
@@ -127,7 +137,7 @@ class ParentDashboardView(LoginRequiredMixin, TemplateView):
 
 
 #<=============>Account Settings<=============>#
-class StudentRegisterView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
+class AccountSettings(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = get_user_model()
     fields = ['first_name', 'last_name','father_name', 'date_of_birth', 'email', 'phone_number', 'password',
               'address', 'gender', 'image', 'bio', 'zip_code']
@@ -138,6 +148,20 @@ class StudentRegisterView(LoginRequiredMixin, PermissionRequiredMixin, CreateVie
     def form_valid(self, form):
         form.instance.status = CustomUser.StatusChoices.admin
         return super().form_valid(form)
+
+
+class UserDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
+    model = get_user_model()
+    template_name = 'delete_page.html'
+    permission_required = ('users.change_customuser')
+
+    def get_success_url(self):
+        if self.get_object().status == CustomUser.StatusChoices.student:
+            return reverse_lazy('users:student_list')
+        if self.get_object().status == CustomUser.StatusChoices.teacher:
+            return reverse_lazy('users:teacher_list')
+        if self.get_object().status == CustomUser.StatusChoices.parent:
+            return reverse_lazy('users:parent_list')
 
 
 class UserLoginView(LoginView):

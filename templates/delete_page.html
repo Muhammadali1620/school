@@ -1,0 +1,12 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+<link rel="stylesheet" href="{% static '../static/style.css' %}"> 
+<div><h1 style="color: red;">Are you sure want to delete:</h1><h1 style="color: orange;">{{ object.get_full_name }}</h1></div>
+<form method="post">
+    {% csrf_token %}
+    <div class="col-12 form-group mg-t-8">
+        <button style="background-color: red;" value="Confirm" type="submit" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">Delete</button>
+        <a href="{{ request.META.HTTP_REFERER }}"><button style="background-color: gray;" type="reset" class="btn-fill-lg bg-blue-dark btn-hover-yellow">Cancel</button></a>
+    </div>
+    <div>{{ form.errors }}</div>
+</form>

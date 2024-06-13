@@ -1,20 +1,7 @@
 {% extends 'base/admin_base.html' %}
 {% load static %}
 {% block content %}
-<!-- Sidebar Area End Here -->
 <div class="dashboard-content-one">
-    <!-- Breadcubs Area Start Here -->
-    <div class="breadcrumbs-area">
-        <h3>Parents</h3>
-        <ul>
-            <li>
-                <a href="index.html">Home</a>
-            </li>
-            <li>All Parents</li>
-        </ul>
-    </div>
-    <!-- Breadcubs Area End Here -->
-    <!-- Teacher Table Area Start Here -->
     <div class="card height-auto">
         <div class="card-body">
             <div class="heading-layout1">
@@ -91,9 +78,9 @@
                                             <span class="flaticon-more-button-of-three-dots"></span>
                                         </a>
                                         <div class="dropdown-menu dropdown-menu-right">
-                                            <a class="dropdown-item" href="#"><i
-                                                    class="fas fa-times text-orange-red"></i>Close</a>
-                                            <a class="dropdown-item" href="#"><i
+                                            <a class="dropdown-item" href="{% url 'users:delete_user' parent.pk %}"><i
+                                                    class="fa fa-trash text-orange-red"></i>Delete</a>
+                                            <a class="dropdown-item" href="{% url 'users:change_parent' parent.pk %}"><i
                                                     class="fas fa-cogs text-dark-pastel-green"></i>Edit</a>
                                             <a class="dropdown-item" href="{% url 'users:parent_detail' parent.pk %}"><i
                                                     class="fa fa-eye text-blue"></i>Refresh</a>

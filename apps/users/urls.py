@@ -14,6 +14,7 @@ urlpatterns = [
 
     #Parents
     path('parent_list/', views.ParentListView.as_view(), name='parent_list'),
+    path('change_parent/<int:pk>/', views.ParentUpdateView.as_view(), name='change_parent'),
     path('parent_detail/<int:pk>/', views.ParentDetailView.as_view(), name='parent_detail'),
     path('add_parent/', views.ParentRegisterView.as_view(), name='add_parent'),
     path('parent_dashboard/', views.ParentDashboardView.as_view(), name='parent_dashboard'),
@@ -26,7 +27,8 @@ urlpatterns = [
     path('teacher_dashboard/', views.TeacherDashboardView.as_view(), name='teacher_dashboard'),
         
     # Account settings
-    path('account_settings', views.StudentRegisterView.as_view(), name='account_settings'),
+    path('account_settings', views.AccountSettings.as_view(), name='account_settings'),
+    path('delete_user/<int:pk>/', views.UserDeleteView.as_view(), name='delete_user'),
     path('login/', views.UserLoginView.as_view(), name='login'),
     path('register/teacher/', views.TeacherRegisterView.as_view(), name='register_teacher'),
     path('logout/', views.UserLogoutView.as_view(), name='logout'),
