@@ -1,6 +1,6 @@
 import os
 from django.conf import settings
-
+GENERATE = True
 POSTGRES = True
 
 if POSTGRES:

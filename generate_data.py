@@ -6,6 +6,7 @@ migration_db = input('migration db?: ')
 if migration_db == '1':
     os.system("python migration_db.py")
 
+os.system("python manage.py generate_perms")
 os.system("python manage.py generate_groups")
 os.system("python manage.py generate_subjects")
 os.system("python manage.py generate_teacher")

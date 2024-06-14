@@ -1,9 +1,9 @@
 from django.db import models
+from apps.general.models import AbstractModel
 from apps.subjects.models import Subject
-from django_ckeditor_5.fields import CKEditor5Field
 
 
-class Lesson(models.Model):
+class Lesson(AbstractModel):
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
     ordering = models.PositiveIntegerField(default=1)
     title = models.CharField(max_length=255)

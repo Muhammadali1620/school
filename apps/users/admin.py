@@ -1,7 +1,7 @@
 from django.contrib import admin
-from django.conf import settings
 from apps.users.models import CustomUser
 from django.contrib.auth.models import Permission
+from django.contrib.contenttypes.models import ContentType
 
 
 @admin.register(CustomUser)
@@ -25,4 +25,12 @@ class CustomUserAdmin(admin.ModelAdmin):
 #     list_display = ['id', 'name', 'codename']
 #     list_display_links = list_display
 #     search_fields = ['name', 'codename']
+#     ordering = ['id']
+
+
+# @admin.register(ContentType)
+# class ContentTypeAdmin(admin.ModelAdmin):
+#     list_display = ['id', 'app_label', 'model']
+#     list_display_links = list_display
+#     search_fields = ['app_label', 'model']
 #     ordering = ['id']

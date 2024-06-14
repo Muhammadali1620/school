@@ -1,12 +1,12 @@
 from django.db import models
+from apps.general.models import AbstractModel
 from apps.subjects.models import Subject
 from apps.users.models import CustomUser
 from django.conf import settings
 from django.core.validators import MinValueValidator
-from django_ckeditor_5.fields import CKEditor5Field
 
 
-class Exam(models.Model):
+class Exam(AbstractModel):
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE,
                                 related_name='exam', related_query_name='exam')
     ordering = models.PositiveSmallIntegerField(validators=[MinValueValidator(1)])
@@ -22,13 +22,13 @@ class Exam(models.Model):
         return self.title
 
 
-class ExamResult(models.Model):
+class ExamResult(AbstractModel):
     student = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,  limit_choices_to={'status': CustomUser.StatusChoices.student.value},
                                 related_name='student_exam_results', related_query_name='student_exam_results')
     exam = models.ForeignKey(Exam, on_delete=models.SET_NULL, null=True,
                              related_name='exam_results', related_query_name='exam_results')
-    precent = models.PositiveSmallIntegerField()
+    percent = models.PositiveSmallIntegerField()
     comment = models.CharField(max_length=255)
 
     def __str__(self):
-        return self.precent 
+        return self.percent 

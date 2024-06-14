@@ -13,14 +13,14 @@ class StudentListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     template_name = 'all-student.html'
     queryset = CustomUser.objects.filter(status=CustomUser.StatusChoices.student)
     context_object_name = 'students'
-    permission_required = ('users.view_customuser')
+    permission_required = ('users.view_students',)
 
 
 class StudentDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
     template_name = 'student-detail.html'
     queryset = CustomUser.objects.filter(status=CustomUser.StatusChoices.student)
     context_object_name = 'student'
-    permission_required = ('users.view_customuser')
+    permission_required = ('users.view_students',)
         
 
 class StudentRegisterView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
@@ -28,7 +28,7 @@ class StudentRegisterView(LoginRequiredMixin, PermissionRequiredMixin, CreateVie
     fields = ['first_name', 'last_name','father_name', 'mother_name', 'date_of_birth', 'email', 'phone_number', 'password',
                'student_group', 'address', 'gender', 'image', 'bio', 'zip_code']
     template_name = 'admit-form.html'
-    permission_required = ('users.add_customuser')
+    permission_required = ('users.add_students',)
     success_url = reverse_lazy('users:student_list')
 
     def form_valid(self, form):
@@ -41,7 +41,7 @@ class StudentUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView)
     fields = ['first_name', 'last_name','father_name', 'mother_name', 'date_of_birth', 'email', 'phone_number', 'password',
                'student_group', 'address', 'gender', 'image', 'bio', 'zip_code']
     template_name = 'update-form.html'
-    permission_required = ('users.change_customuser')
+    permission_required = ('users.change_students',)
     success_url = reverse_lazy('users:student_list')
 
 
@@ -58,7 +58,7 @@ class TeacherListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     template_name = 'all-teacher.html'
     queryset = CustomUser.objects.filter(status=CustomUser.StatusChoices.teacher)
     context_object_name = 'teachers'
-    permission_required = ('users.view_customuser')
+    permission_required = ('users.view_teachers',)
 
 
 class TeacherUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
@@ -66,7 +66,7 @@ class TeacherUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView)
     fields = ['first_name', 'last_name','father_name', 'mother_name', 'date_of_birth', 'email', 'phone_number', 'password',
                'subject', 'address', 'gender', 'salary', 'image', 'bio', 'zip_code']
     template_name = 'update-form.html'
-    permission_required = ('users.change_customuser')
+    permission_required = ('users.change_teachers',)
     success_url = reverse_lazy('users:teacher_list')
         
 
@@ -74,7 +74,7 @@ class TeacherDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView)
     template_name = 'teacher-detail.html'
     queryset = CustomUser.objects.filter(status=CustomUser.StatusChoices.teacher)
     context_object_name = 'teacher'
-    permission_required = ('users.view_customuser')
+    permission_required = ('users.view_teachers',)
 
 
 class TeacherRegisterView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
@@ -82,7 +82,7 @@ class TeacherRegisterView(LoginRequiredMixin, PermissionRequiredMixin, CreateVie
     fields = ['first_name', 'last_name','father_name', 'mother_name', 'date_of_birth', 'email', 'phone_number', 'password',
                'subject', 'address', 'gender', 'salary', 'image', 'bio', 'zip_code']
     template_name = 'admit-form.html'
-    permission_required = ('users.add_customuser')
+    permission_required = ('users.add_teachers',)
     success_url = reverse_lazy('users:teacher_list')
 
     def form_valid(self, form):
@@ -99,14 +99,14 @@ class ParentListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     template_name = 'all-parent.html'
     queryset = CustomUser.objects.filter(status=CustomUser.StatusChoices.parent)
     context_object_name = 'parents'
-    permission_required = ('users.view_customuser')
+    permission_required = ('users.view_parents',)
 
 
 class ParentDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
     template_name = 'parent-detail.html'
     queryset = CustomUser.objects.filter(status=CustomUser.StatusChoices.parent)
     context_object_name = 'parent'
-    permission_required = ('users.view_customuser')
+    permission_required = ('users.view_parents',)
 
 
 class ParentRegisterView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
@@ -114,7 +114,7 @@ class ParentRegisterView(LoginRequiredMixin, PermissionRequiredMixin, CreateView
     fields = ['first_name', 'last_name','father_name', 'date_of_birth', 'email', 'phone_number', 'password',
                'child', 'address', 'gender', 'image', 'bio', 'zip_code']
     template_name = 'admit-form.html'
-    permission_required = ('users.add_customuser')
+    permission_required = ('users.add_parents',)
     success_url = reverse_lazy('users:parent_list')
 
     def form_valid(self, form):
@@ -127,7 +127,7 @@ class ParentUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     template_name = 'update-form.html'
     fields = ['first_name', 'last_name','father_name', 'date_of_birth', 'email', 'phone_number', 'password',
                'child', 'address', 'gender', 'image', 'bio', 'zip_code']
-    permission_required = ('users.change_customuser')
+    permission_required = ('users.change_parents',)
     success_url = reverse_lazy('users:parent_list')
 
 
@@ -142,7 +142,7 @@ class AccountSettings(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     fields = ['first_name', 'last_name','father_name', 'date_of_birth', 'email', 'phone_number', 'password',
               'address', 'gender', 'image', 'bio', 'zip_code']
     template_name = 'admit-form.html'
-    permission_required = ('users.add_customuser')
+    permission_required = ('users.add_admins',)
     success_url = reverse_lazy('home')
 
     def form_valid(self, form):
@@ -153,7 +153,7 @@ class AccountSettings(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
 class UserDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = get_user_model()
     template_name = 'delete_page.html'
-    permission_required = ('users.change_customuser')
+    permission_required = ('users.change_customuser',)
 
     def get_success_url(self):
         if self.get_object().status == CustomUser.StatusChoices.student:

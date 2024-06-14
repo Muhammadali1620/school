@@ -1,8 +1,8 @@
 from django.db import models
-from apps.groups.services import normalize_text
+from apps.general.models import AbstractModel
 
 
-class Subject(models.Model):
+class Subject(AbstractModel):
     name = models.CharField(max_length=70)
     slug = models.SlugField(max_length=70, unique=True)
     desc = models.CharField(max_length=320)
@@ -12,11 +12,3 @@ class Subject(models.Model):
 
     def __str__(self):
         return self.name
-    
-    @classmethod
-    def get_normalize_fields(cls):
-        return ['name', 'desc']
-    
-    def save(self, *args, **kwargs):
-        normalize_text(self)
-        super().save(*args, **kwargs)

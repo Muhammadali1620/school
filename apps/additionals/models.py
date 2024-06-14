@@ -1,10 +1,9 @@
 from django.db import models
+from apps.general.models import AbstractModel
 from apps.subjects.models import Subject
-from apps.groups.services import normalize_text
-from django_ckeditor_5.fields import CKEditor5Field
 
 
-class AdditionalTask(models.Model):
+class AdditionalTask(AbstractModel):
     subject = models.ForeignKey(Subject, on_delete=models.PROTECT,
                                 related_name='tasks', related_query_name='tasks')
     title = models.CharField(max_length=70)
@@ -14,11 +13,3 @@ class AdditionalTask(models.Model):
 
     def __str__(self):
         return self.title
-    
-    @classmethod
-    def get_normalize_fields(cls):
-        return ['title', 'desc']
-    
-    def save(self, *args, **kwargs):
-        normalize_text(self)
-        super().save(*args, **kwargs)

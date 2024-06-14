@@ -1,4 +1,5 @@
 from django.db import models
+from apps.general.models import AbstractModel
 from apps.groups.services import normalize_text
 from apps.users.managers import CustomUserManager
 from django.contrib.auth.models import AbstractUser
@@ -16,7 +17,7 @@ from django.core.validators import MinValueValidator
 #         return self.name
 
 
-class CustomUser(AbstractUser):
+class CustomUser(AbstractUser, AbstractModel):
 
     class GenderChoices(models.TextChoices):
         man = 'MAN'
