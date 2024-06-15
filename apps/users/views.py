@@ -1,9 +1,11 @@
+from django.http import HttpRequest, HttpResponse
 from django.views.generic import ListView, DetailView, CreateView, TemplateView, UpdateView, DeleteView
 from apps.users.models import CustomUser
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.contrib.auth.views import LoginView, LogoutView
 from django.shortcuts import render, redirect
+from django.contrib import messages
 from django.contrib.auth import logout
 from django.urls import reverse_lazy
 
@@ -154,6 +156,13 @@ class UserDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = get_user_model()
     template_name = 'delete_page.html'
     permission_required = ('users.change_customuser',)
+
+    def form_valid(self, form):
+        if self.get_object().status == CustomUser.StatusChoices.teacher and self.get_object().teacher_groups:
+            messages.error(self.request, 'You cannot delete a teacher while he has groups!')
+            return redirect(self.request.META['HTTP_REFERER'])
+        else:
+            return super().form_valid(form)
 
     def get_success_url(self):
         if self.get_object().status == CustomUser.StatusChoices.student:

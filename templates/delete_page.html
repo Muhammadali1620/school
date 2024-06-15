@@ -2,6 +2,11 @@
 <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
 <link rel="stylesheet" href="{% static '../static/style.css' %}"> 
 <div><h1 style="color: red;">Are you sure want to delete:</h1><h1 style="color: orange;">{{ object.get_full_name }}</h1></div>
+<div>
+    {% for message in messages %}
+        <h1 style="color: red;">{{ message }}</h1>
+    {% endfor %}
+</div>
 <form method="post">
     {% csrf_token %}
     <div class="col-12 form-group mg-t-8">
