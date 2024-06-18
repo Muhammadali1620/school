@@ -7,7 +7,7 @@ class AbstractModel(models.Model):
 
     def save(self, *args, **kwargs):
         normalize_txt(self)
-        return super().save(args, kwargs)
+        super().save(*args, **kwargs)
 
     class Meta:
         abstract = True
