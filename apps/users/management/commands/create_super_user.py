@@ -9,7 +9,7 @@ class Command(BaseCommand):
         email = input("email: ")
         password = input("password: ")
         norm_email = BaseUserManager.normalize_email(email)
-        admin = CustomUser.objects.create_superuser(status=1,
+        admin = CustomUser.objects.create_superuser(role=1,
                                             phone_number='+998123456789',
                                             email=norm_email,
                                             first_name='1',
@@ -20,4 +20,4 @@ class Command(BaseCommand):
                                             date_of_birth=now().date(),
                                             bio="vashshe zo'r admi",
                                             password=password)
-        self.stdout.write(self.style.SUCCESS(f"Superuser added successfully\nstatus: {admin.status}\nphone_number: {admin.phone_number}\nemail: {admin.email}\npassword: {password}"))
+        self.stdout.write(self.style.SUCCESS(f"Superuser added successfully\nrole: {admin.role}\nphone_number: {admin.phone_number}\nemail: {admin.email}\npassword: {password}"))

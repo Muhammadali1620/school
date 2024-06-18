@@ -5,7 +5,7 @@ from apps.users.models import CustomUser
 class Command(BaseCommand):
     def handle(self, *args, **options):
         admin1 = CustomUser.objects.create(
-            status=CustomUser.StatusChoices.admin,
+            role=CustomUser.Role.ADMIN,
             password = "asd",
             phone_number="+998909876543",
             email="admin1@example.com",
@@ -14,7 +14,7 @@ class Command(BaseCommand):
             father_name="Admin",
             mother_name="Admin",
             address="789 Oak Street",
-            gender=CustomUser.GenderChoices.man,
+            gender=CustomUser.Gender.MAN,
             date_of_birth="1970-01-01",
             bio="Administrator of the system.",
         )
@@ -27,9 +27,9 @@ class Command(BaseCommand):
             first_name='Admin',
             last_name='User',
             father_name="John",
-            status=CustomUser.StatusChoices.admin,
+            role=CustomUser.Role.ADMIN,
             phone_number='+998991234567',
-            gender=CustomUser.GenderChoices.man,
+            gender=CustomUser.Gender.MAN,
             date_of_birth='1980-01-01',
             address='Tashkent',
             bio='...',
@@ -43,12 +43,14 @@ class Command(BaseCommand):
             first_name='admin2',
             last_name='User',
             father_name="John",
-            status=CustomUser.StatusChoices.admin,
+            role=CustomUser.Role.ADMIN,
             phone_number='+998996543210',
-            gender=CustomUser.GenderChoices.woman,
+            gender=CustomUser.Gender.WOMAN,
             date_of_birth='1985-01-01',
             address='Navoi',
             bio='...',
         )
         
         admin3.groups.set([3])
+
+        self.stdout.write(self.style.SUCCESS(f"3-admins created"))

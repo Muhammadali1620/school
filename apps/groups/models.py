@@ -17,7 +17,7 @@ class StudentGroup(models.Model):
         sa = 5, 'Saturday'
         su = 6, 'Sunday'
 
-    teacher = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, limit_choices_to={'status': CustomUser.StatusChoices.teacher.value},
+    teacher = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, limit_choices_to={'role': CustomUser.Role.TEACHER.value},
                                 related_name='teacher_groups', related_query_name='teacher_groups')
     subject = models.ForeignKey(Subject, on_delete=models.PROTECT,
                                 related_name='student_groups', related_query_name='student_groups')

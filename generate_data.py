@@ -13,7 +13,7 @@ os.system("python manage.py generate_teacher")
 os.system("python manage.py generate_student_groups")
 os.system("python manage.py generate_student")
 os.system("python manage.py generate_admin")
-os.system("python manage.py generate_parent")
+os.system("python manage.py generate_parent")#
 os.system("python manage.py generate_additional_tasks")
 os.system("python manage.py generate_exams")
 os.system("python manage.py generate_payment")

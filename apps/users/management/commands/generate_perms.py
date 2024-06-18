@@ -110,4 +110,4 @@ class Command(BaseCommand):
             content_type=user_customuser
         )
         
-        self.stdout.write(self.style.SUCCESS(f"{Permission.objects.count()}-perms created"))
+        self.stdout.write(self.style.SUCCESS(f"16-perms created"))

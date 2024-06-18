@@ -7,10 +7,10 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 
 class Payment(models.Model):
     student = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, blank=True, null=True,
-                                limit_choices_to={'status': CustomUser.StatusChoices.student.value},
+                                limit_choices_to={'role': CustomUser.Role.STUDENT.value},
                                 related_name='student_payments', related_query_name='student_payments')
     teacher = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, blank=True, null=True,
-                                limit_choices_to={'status': CustomUser.StatusChoices.teacher.value},
+                                limit_choices_to={'role': CustomUser.Role.TEACHER.value},
                                 related_name='teacher_payments', related_query_name='teacher_payments', )
     month = models.PositiveSmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(12)])
     year = models.PositiveSmallIntegerField(validators=[MinValueValidator(2020), MaxValueValidator(3000)])

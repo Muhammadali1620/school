@@ -17,11 +17,11 @@ def post_save_user(instance, created, *args, **kwargs):
     if not created:
         return
     UserModel = get_user_model()
-    if instance.status == UserModel.StatusChoices.student:
+    if instance.role == UserModel.Role.STUDENT:
         instance.groups.set([1])
-    if instance.status == UserModel.StatusChoices.teacher:
+    if instance.role == UserModel.Role.TEACHER:
         instance.groups.set([2])
-    if instance.status == UserModel.StatusChoices.admin:
+    if instance.role == UserModel.Role.ADMIN:
         instance.groups.set([3])
-    if instance.status == UserModel.StatusChoices.parent:
+    if instance.role == UserModel.Role.PARENT:
         instance.groups.set([4])

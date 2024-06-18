@@ -23,7 +23,7 @@ class Exam(AbstractModel):
 
 
 class ExamResult(AbstractModel):
-    student = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,  limit_choices_to={'status': CustomUser.StatusChoices.student.value},
+    student = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,  limit_choices_to={'role': CustomUser.Role.STUDENT.value},
                                 related_name='student_exam_results', related_query_name='student_exam_results')
     exam = models.ForeignKey(Exam, on_delete=models.SET_NULL, null=True,
                              related_name='exam_results', related_query_name='exam_results')

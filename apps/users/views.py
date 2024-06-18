@@ -1,4 +1,3 @@
-from django.http import HttpRequest, HttpResponse
 from django.views.generic import ListView, DetailView, CreateView, TemplateView, UpdateView, DeleteView
 from apps.users.models import CustomUser
 from django.contrib.auth import get_user_model
@@ -8,21 +7,48 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import logout
 from django.urls import reverse_lazy
+from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 
 
 #<=============>Students<=============>#
 class StudentListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     template_name = 'all-student.html'
-    queryset = CustomUser.objects.filter(status=CustomUser.StatusChoices.student)
+    queryset = CustomUser.objects.filter(role=CustomUser.Role.STUDENT.value)
     context_object_name = 'students'
     permission_required = ('users.view_students',)
+
+    def get_queryset(self):
+        user = self.request.user
+        match user.role:
+            case CustomUser.Role.PARENT.value:
+                self.queryset = user.children.all()
+            case CustomUser.Role.TEACHER.value:
+                 self.queryset = user.get_all_student_in_group(user)
+        return self.queryset
 
 
 class StudentDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
     template_name = 'student-detail.html'
-    queryset = CustomUser.objects.filter(status=CustomUser.StatusChoices.student)
+    queryset = CustomUser.objects.filter(role=CustomUser.Role.STUDENT.value)
     context_object_name = 'student'
     permission_required = ('users.view_students',)
+
+    def get_object(self):
+        user = self.request.user
+        pk = self.kwargs[self.pk_url_kwarg]
+        try:
+            obj = CustomUser.objects.get(pk=pk)
+        except CustomUser.DoesNotExist:
+            raise ObjectDoesNotExist()
+
+        match user.role:
+            case CustomUser.Role.PARENT.value:
+                if obj not in user.children.all():
+                    raise PermissionDenied("You are not authorized to view this student")
+            case CustomUser.Role.TEACHER.value:
+                if obj not in user.get_all_student_in_group(user):
+                    raise PermissionDenied("This is not your student")
+        return obj
         
 
 class StudentRegisterView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
@@ -34,7 +60,7 @@ class StudentRegisterView(LoginRequiredMixin, PermissionRequiredMixin, CreateVie
     success_url = reverse_lazy('users:student_list')
 
     def form_valid(self, form):
-        form.instance.status = CustomUser.StatusChoices.student
+        form.instance.role = CustomUser.Role.STUDENT.value
         return super().form_valid(form)
     
 
@@ -58,7 +84,7 @@ class StudentDashboardView(LoginRequiredMixin, TemplateView):
 #<=============>Teachers<=============>#
 class TeacherListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     template_name = 'all-teacher.html'
-    queryset = CustomUser.objects.filter(status=CustomUser.StatusChoices.teacher)
+    queryset = CustomUser.objects.filter(role=CustomUser.Role.TEACHER.value)
     context_object_name = 'teachers'
     permission_required = ('users.view_teachers',)
 
@@ -74,7 +100,7 @@ class TeacherUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView)
 
 class TeacherDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
     template_name = 'teacher-detail.html'
-    queryset = CustomUser.objects.filter(status=CustomUser.StatusChoices.teacher)
+    queryset = CustomUser.objects.filter(role=CustomUser.Role.TEACHER.value)
     context_object_name = 'teacher'
     permission_required = ('users.view_teachers',)
 
@@ -88,7 +114,7 @@ class TeacherRegisterView(LoginRequiredMixin, PermissionRequiredMixin, CreateVie
     success_url = reverse_lazy('users:teacher_list')
 
     def form_valid(self, form):
-        form.instance.status = CustomUser.StatusChoices.teacher
+        form.instance.role = CustomUser.Role.TEACHER.value
         return super().form_valid(form)
 
 
@@ -99,14 +125,14 @@ class TeacherDashboardView(LoginRequiredMixin, TemplateView):
 #<=============>Parents<=============>#
 class ParentListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     template_name = 'all-parent.html'
-    queryset = CustomUser.objects.filter(status=CustomUser.StatusChoices.parent)
+    queryset = CustomUser.objects.filter(role=CustomUser.Role.PARENT.value)
     context_object_name = 'parents'
     permission_required = ('users.view_parents',)
 
 
 class ParentDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
     template_name = 'parent-detail.html'
-    queryset = CustomUser.objects.filter(status=CustomUser.StatusChoices.parent)
+    queryset = CustomUser.objects.filter(role=CustomUser.Role.PARENT.value)
     context_object_name = 'parent'
     permission_required = ('users.view_parents',)
 
@@ -114,13 +140,13 @@ class ParentDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
 class ParentRegisterView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = get_user_model()
     fields = ['first_name', 'last_name','father_name', 'date_of_birth', 'email', 'phone_number', 'password',
-               'child', 'address', 'gender', 'image', 'bio', 'zip_code']
+               'children', 'address', 'gender', 'image', 'bio', 'zip_code']
     template_name = 'admit-form.html'
     permission_required = ('users.add_parents',)
     success_url = reverse_lazy('users:parent_list')
 
     def form_valid(self, form):
-        form.instance.status = CustomUser.StatusChoices.parent
+        form.instance.role = CustomUser.Role.PARENT.value
         return super().form_valid(form)
     
 
@@ -128,7 +154,7 @@ class ParentUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = get_user_model()
     template_name = 'update-form.html'
     fields = ['first_name', 'last_name','father_name', 'date_of_birth', 'email', 'phone_number', 'password',
-               'child', 'address', 'gender', 'image', 'bio', 'zip_code']
+               'children', 'address', 'gender', 'image', 'bio', 'zip_code']
     permission_required = ('users.change_parents',)
     success_url = reverse_lazy('users:parent_list')
 
@@ -148,7 +174,7 @@ class AccountSettings(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     success_url = reverse_lazy('home')
 
     def form_valid(self, form):
-        form.instance.status = CustomUser.StatusChoices.admin
+        form.instance.role = CustomUser.Role.ADMIN.value
         return super().form_valid(form)
 
 
@@ -158,18 +184,18 @@ class UserDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     permission_required = ('users.change_customuser',)
 
     def form_valid(self, form):
-        if self.get_object().status == CustomUser.StatusChoices.teacher and self.get_object().teacher_groups:
+        if self.get_object().role == CustomUser.Role.TEACHER.value and self.get_object().teacher_groups:
             messages.error(self.request, 'You cannot delete a teacher while he has groups!')
             return redirect(self.request.META['HTTP_REFERER'])
         else:
             return super().form_valid(form)
 
     def get_success_url(self):
-        if self.get_object().status == CustomUser.StatusChoices.student:
+        if self.get_object().role == CustomUser.Role.STUDENT.value:
             return reverse_lazy('users:student_list')
-        if self.get_object().status == CustomUser.StatusChoices.teacher:
+        if self.get_object().role == CustomUser.Role.TEACHER.value:
             return reverse_lazy('users:teacher_list')
-        if self.get_object().status == CustomUser.StatusChoices.parent:
+        if self.get_object().role == CustomUser.Role.PARENT.value:
             return reverse_lazy('users:parent_list')
 
 

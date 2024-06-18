@@ -5,7 +5,7 @@ from apps.users.models import CustomUser
 class Command(BaseCommand):
     def handle(self, *args, **options):
         teacher1 = CustomUser.objects.create(
-            status=CustomUser.StatusChoices.teacher,
+            role=CustomUser.Role.TEACHER,
             phone_number="+998901234567",
             password = "asd",
             email="teacher1@example.com",
@@ -15,7 +15,7 @@ class Command(BaseCommand):
             subject_id=1,
             mother_name="Jane",
             address="123 Main Street",
-            gender=CustomUser.GenderChoices.man,
+            gender=CustomUser.Gender.MAN,
             date_of_birth="1980-01-01",
             salary=100000.00,
             bio="Experienced teacher with 5 years of experience in teaching mathematics."
@@ -30,9 +30,9 @@ class Command(BaseCommand):
             last_name='User',
             father_name="John",
             subject_id=2,
-            status=CustomUser.StatusChoices.teacher,
+            role=CustomUser.Role.TEACHER,
             phone_number='+998997654321',
-            gender=CustomUser.GenderChoices.woman,
+            gender=CustomUser.Gender.WOMAN,
             date_of_birth='1990-01-01',
             address='Samarkand',
             bio='...',
@@ -48,9 +48,9 @@ class Command(BaseCommand):
             last_name='User',
             father_name="John",
             subject_id=3,
-            status=CustomUser.StatusChoices.teacher,
+            role=CustomUser.Role.TEACHER,
             phone_number='+998992345678',
-            gender=CustomUser.GenderChoices.man,
+            gender=CustomUser.Gender.MAN,
             date_of_birth='2001-01-01',
             address='Termez',
             bio='...',
@@ -58,3 +58,5 @@ class Command(BaseCommand):
         )
         
         teacher3.groups.set([2])
+
+        self.stdout.write(self.style.SUCCESS(f"3-teachers created"))
