@@ -49,6 +49,7 @@ class StudentDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView)
                 if obj not in user.get_all_student_in_group(user):
                     raise PermissionDenied("This is not your student")
         return obj
+
         
 
 class StudentRegisterView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
