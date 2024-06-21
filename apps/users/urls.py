@@ -31,7 +31,4 @@ urlpatterns = [
     path('delete/<int:pk>/user', views.UserDeleteView.as_view(), name='delete_user'),
     path('login/', views.UserLoginView.as_view(), name='login'),
     path('logout/', views.UserLogoutView.as_view(), name='logout'),
-
-    #errors
-    path('error_403/', views.error_403, name='error_403'),
 ]
