@@ -9,6 +9,7 @@ from django.contrib.auth import logout
 from django.urls import reverse_lazy
 from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 from apps.users.forms import ParentRegisterForm, TeacherRegisterForm, StudentRegisterForm
+from django.db.models import Q
 
 
 class UserRegisterView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
@@ -45,6 +46,15 @@ class StudentListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
                 self.queryset = user.children.all()
             case CustomUser.Role.TEACHER.value:
                  self.queryset = user.get_all_student_in_group(user)
+        query = self.request.GET.get('query')
+        if query:
+            self.queryset = self.queryset.filter(Q(pk__icontains=query) |
+                                                 Q(phone_number__icontains=query) | 
+                                                 Q(email__icontains=query) |
+                                                 Q(first_name__icontains=query) |
+                                                 Q(last_name__icontains=query) |
+                                                 Q(father_name__icontains=query) |
+                                                 Q(bio__icontains=query))
         return self.queryset
 
 

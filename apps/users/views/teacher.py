@@ -17,6 +17,18 @@ class TeacherListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     context_object_name = 'teachers'
     permission_required = ('users.view_teachers',)
 
+    def get_queryset(self):
+        query = self.request.GET.get('query')
+        if query:
+            self.queryset = self.queryset.filter(Q(pk__icontains=query) |
+                                                 Q(phone_number__icontains=query) |
+                                                 Q(email__icontains=query) |
+                                                 Q(first_name__icontains=query) |
+                                                 Q(last_name__icontains=query) |
+                                                 Q(father_name__icontains=query) |
+                                                 Q(bio__icontains=query))
+        return self.queryset
+
 
 class TeacherUpdateView(UserUpdateView):
     form_class = TeacherRegisterForm
