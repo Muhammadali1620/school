@@ -1,15 +1,16 @@
-from django.views.generic import ListView, DetailView, CreateView, TemplateView, UpdateView, DeleteView
-from apps.users.models import CustomUser
-from django.contrib.auth import get_user_model
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from django.contrib.auth.views import LoginView, LogoutView
-from django.shortcuts import render, redirect
-from django.contrib import messages
-from django.contrib.auth import logout
-from django.urls import reverse_lazy
-from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
-from apps.users.forms import ParentRegisterForm, TeacherRegisterForm, StudentRegisterForm
 from django.db.models import Q
+from django.contrib import messages
+from django.urls import reverse_lazy
+from django.contrib.auth import logout
+from apps.users.models import CustomUser
+from apps.users.filters import StudentFilter
+from django.shortcuts import render, redirect
+from django.contrib.auth import get_user_model
+from django.contrib.auth.views import LoginView, LogoutView
+from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from apps.users.forms import ParentRegisterForm, TeacherRegisterForm, StudentRegisterForm
+from django.views.generic import ListView, DetailView, CreateView, TemplateView, UpdateView, DeleteView
 
 
 class UserRegisterView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
@@ -46,6 +47,8 @@ class StudentListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
                 self.queryset = user.children.all()
             case CustomUser.Role.TEACHER.value:
                  self.queryset = user.get_all_student_in_group(user)
+        self.filterset = StudentFilter(self.request.GET, queryset=self.queryset)
+        self.queryset = self.filterset.qs
         query = self.request.GET.get('query')
         if query:
             self.queryset = self.queryset.filter(Q(pk__icontains=query) |
@@ -57,6 +60,11 @@ class StudentListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
                                                  Q(bio__icontains=query))
         return self.queryset
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['filter'] = self.filterset
+        return context
+    
 
 class StudentDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
     template_name = 'student-detail.html'

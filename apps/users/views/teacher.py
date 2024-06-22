@@ -18,6 +18,8 @@ class TeacherListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     permission_required = ('users.view_teachers',)
 
     def get_queryset(self):
+        self.filterset = StudentFilter(self.request.GET, queryset=self.queryset)
+        self.queryset = self.filterset.qs
         query = self.request.GET.get('query')
         if query:
             self.queryset = self.queryset.filter(Q(pk__icontains=query) |
@@ -28,6 +30,11 @@ class TeacherListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
                                                  Q(father_name__icontains=query) |
                                                  Q(bio__icontains=query))
         return self.queryset
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['filter'] = self.filterset
+        return context
 
 
 class TeacherUpdateView(UserUpdateView):
