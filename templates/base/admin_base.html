@@ -31,6 +31,30 @@
     <link rel="stylesheet" href="{% static '../static/style.css' %}">
     <!-- Modernize js -->
     <script src="{% static 'js/modernizr-3.6.0.min.js' %}"></script>
+    <style>
+        .select-btn{
+        background-color:transparent;
+        color:black;
+        border:none;
+        font-size:18px;
+        }
+        .select-btn:hover{
+        background-color:transparent;
+        color:black;
+        }
+
+        .select-btn option{
+        background-color:transparent;
+        color:black;
+        }
+        .go-btn{
+        background-color:transparent;
+        color:black;
+        font-size:18px;
+        border:none;
+        }
+    </style>
+
 </head>
 
 <body>
@@ -182,23 +206,23 @@
                             </div>
                         </div>
                     </li>
-                     <li class="navbar-item dropdown header-language">
+                    <li class="navbar-item dropdown header-language">
                         <form class="navbar-nav-link dropdown-toggle" action="{% url 'set_language' %}" method="post">
                             {% csrf_token %}
                             <input name="next" type="hidden" value="{{redirect_to }}">
-                            <select name="language">
+                            <select name="language" class="btn btn-primary select-btn">
                                 {% get_current_language as LANGUAGE_CODE %}
                                 {% get_available_languages as LANGUAGES %}
                                 {% get_language_info_list for LANGUAGES as languages %}
                                 <div class="dropdown-menu dropdown-menu-right">
                                     {% for language in languages %}
-                                        <option  class="dropdown-item" value="{{ language.code }}" {% if language.code == LANGUAGE_CODE %} selected {% endif %} >
-                                            {{ language.name_local }} ({{ language.code }})
-                                        </option>
+                                    <option class="dropdown-item" value="{{ language.code }}" {% if language.code == LANGUAGE_CODE %} selected {% endif %}>
+                                        {{ language.name_local }} ({{ language.code }})
+                                    </option>
                                     {% endfor %}
-                                </div>   
+                                </div>
                             </select>
-                            <input type="submit" value="Go">
+                                <input type="submit" value="Go" class="btn btn-primary go-btn">
                         </form>
                     </li>
                 </ul>
