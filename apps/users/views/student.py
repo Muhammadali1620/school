@@ -9,7 +9,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.views import LoginView, LogoutView
 from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from apps.users.forms import ParentRegisterForm, TeacherRegisterForm, StudentRegisterForm
+from apps.users.forms import ParentRegisterForm, TeacherRegisterForm, StudentRegisterForm, AdminRegisterForm
 from django.views.generic import ListView, DetailView, CreateView, TemplateView, UpdateView, DeleteView
 
 
@@ -24,7 +24,6 @@ class UserUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
 
 
 class StudentRegisterView(UserRegisterView):
-    model = get_user_model()
     form_class = StudentRegisterForm
     permission_required = ('users.add_students',)
     success_url = reverse_lazy('users:student_list')
@@ -49,15 +48,20 @@ class StudentListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
                  self.queryset = user.get_all_student_in_group(user)
         self.filterset = StudentFilter(self.request.GET, queryset=self.queryset)
         self.queryset = self.filterset.qs
-        query = self.request.GET.get('query')
-        if query:
-            self.queryset = self.queryset.filter(Q(pk__icontains=query) |
-                                                 Q(phone_number__icontains=query) | 
-                                                 Q(email__icontains=query) |
-                                                 Q(first_name__icontains=query) |
-                                                 Q(last_name__icontains=query) |
-                                                 Q(father_name__icontains=query) |
-                                                 Q(bio__icontains=query))
+        username = self.request.GET.get('username')
+        query_id = self.request.GET.get('id')
+        name = self.request.GET.get('name')
+        if username:
+            self.queryset = self.queryset.filter(
+                                                 Q(phone_number__icontains=username) | 
+                                                 Q(email__icontains=username))
+        if query_id:
+            self.queryset = self.queryset.filter(pk__startswith=query_id)
+
+        if name:
+            self.queryset = self.queryset.filter(Q(first_name__icontains=name) |
+                                                 Q(last_name__icontains=name) |
+                                                 Q(father_name__icontains=name))
         return self.queryset
 
     def get_context_data(self, **kwargs):

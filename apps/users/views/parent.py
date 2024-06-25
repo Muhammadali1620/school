@@ -18,15 +18,21 @@ class ParentListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     permission_required = ('users.view_parents',)
 
     def get_queryset(self):
-        query = self.request.GET.get('query')
-        if query:
-            self.queryset = self.queryset.filter(Q(pk__icontains=query) |
-                                                 Q(phone_number__icontains=query) |
-                                                 Q(email__icontains=query) |
-                                                 Q(first_name__icontains=query) |
-                                                 Q(last_name__icontains=query) |
-                                                 Q(father_name__icontains=query) |
-                                                 Q(bio__icontains=query))
+        username = self.request.GET.get('username')
+        query_id = self.request.GET.get('id')
+        name = self.request.GET.get('name')
+        if username:
+            self.queryset = self.queryset.filter(
+                                                 Q(phone_number__icontains=username) | 
+                                                 Q(email__icontains=username))
+        if query_id:
+            self.queryset = self.queryset.filter(pk__startswith=query_id)
+
+        if name:
+            self.queryset = self.queryset.filter(Q(first_name__icontains=name) |
+                                                 Q(last_name__icontains=name) |
+                                                 Q(father_name__icontains=name))
+
         return self.queryset
 
 

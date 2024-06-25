@@ -29,3 +29,9 @@ class ParentRegisterForm(UserRegisterForm):
     class Meta(UserRegisterForm.Meta):
         fields = ['first_name', 'last_name','father_name', 'date_of_birth', 'email', 'phone_number', 'password',
                'children', 'address', 'gender', 'image', 'bio', 'zip_code']
+        
+        
+class AdminRegisterForm(UserRegisterForm):
+    class Meta(UserRegisterForm.Meta):
+        fields = ['first_name', 'last_name','father_name', 'date_of_birth', 'email', 'phone_number', 'password',
+                  'address', 'gender', 'image', 'bio', 'zip_code']

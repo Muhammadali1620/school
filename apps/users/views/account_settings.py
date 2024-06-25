@@ -1,13 +1,11 @@
 from .student import *
 
 
-class AccountSettings(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
-    model = get_user_model()
-    fields = ['first_name', 'last_name','father_name', 'date_of_birth', 'email', 'phone_number', 'password',
-              'address', 'gender', 'image', 'bio', 'zip_code']
-    template_name = 'admit-form.html'
+class AccountSettings(UserRegisterView):
     permission_required = ('users.add_admins',)
+    form_class = AdminRegisterForm
     success_url = reverse_lazy('home')
+    permission_required = 'users.add_admin'
 
     def form_valid(self, form):
         form.instance.role = CustomUser.Role.ADMIN.value
