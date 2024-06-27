@@ -7,17 +7,18 @@ from apps.groups.views import home, set_language
 
 
 urlpatterns = [
-    #admin
-    path('admin/', admin.site.urls),
-    
     #2rd apps
-    path('setlang/', set_language, name='set_language'),
+    path('setlang/<str:lang>/', set_language, name='set_language'),
     path('ckeditor5/', include('django_ckeditor_5.urls'), name='ck_editor_5_upload_file'),
     path('__debug__/', include('debug_toolbar.urls')),
 
 ]
 #apps language
 urlpatterns += i18n_patterns(
+    #admin
+    path('admin/', admin.site.urls),
+
+    #my apps
     path('', home, name='home'),
     path('users/', include('apps.users.urls', namespace='users')),
     path('notice/', include('apps.notices.urls', namespace='notices')),

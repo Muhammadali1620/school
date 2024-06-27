@@ -10,9 +10,10 @@ class Attendance(AbstractModel):
                                 related_name='student_attendance', related_query_name='student_attendance')
     came = models.BooleanField(default=True)
     date = models.DateField()
-    group = models.ForeignKey(StudentGroup, on_delete=models.CASCADE,
-                              related_name='attendance', related_query_name='attendance')
-    rezone = models.CharField(max_length=50)
+    rezone = models.CharField(max_length=50, blank=True)
+
+    class Meta:
+        unique_together = ('student', 'date')
 
     def __str__(self):
-        return self.date
+        return f'{self.student} - {self.date.day} - {self.came}'

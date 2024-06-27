@@ -36,4 +36,4 @@ class StudentGroup(models.Model):
             raise ValidationError(f"{self.teacher} o'qituvchining [{self.start_time}~{self.end_time}] vaqt oralig'ida darsi bor")
 
     def __str__(self):
-        return str(self.week_days)
+        return f'{self.subject.name} ({self.start_time.strftime("%H:%M")}-{self.end_time.strftime("%H:%M")})'
