@@ -94,3 +94,4 @@ open.py
 apps/*/migrations/0*
 .idea
 request_gpt.js
+Ngnix and Gunicorn.txt
