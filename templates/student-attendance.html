@@ -2,6 +2,47 @@
 {% load static %}
 {% block content %}
 {% load select %}
+<style>
+.rezone {
+    background: none repeat scroll 0 0 #F8F8F8;
+    border: 5px solid #DFDFDF;
+    color: #717171;
+    font-size: 13px;
+    height: 30px;
+    letter-spacing: 1px;
+    line-height: 30px;
+    margin: 0 auto;
+    position: relative;
+    text-align: center;
+    text-transform: uppercase;
+    top: -80px;
+    left: -30px;
+    display: none;
+    padding: 0 20px;
+}
+
+.rezone:after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    width: 10px;
+    height: 10px;
+    border-bottom: 5px solid #DFDFDF;
+    border-right: 5px solid #DFDFDF;
+    background: #F8F8F8;
+    left: 50%;
+    margin-left: -5px;
+    -moz-transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
+.td:hover .rezone {
+    display: block;
+}
+
+
+</style>
 <div class="dashboard-content-one">
     <div class="row">
         <div class="col-12">
@@ -80,7 +121,6 @@
                        <div class="dropdown">
                             <a class="dropdown-toggle" href="#" role="button" 
                             data-toggle="dropdown" aria-expanded="false">...</a>
-    
                             <div class="dropdown-menu dropdown-menu-right">
                                 <a class="dropdown-item" href="#"><i class="fas fa-times text-orange-red"></i>Close</a>
                                 <a class="dropdown-item" href="#"><i class="fas fa-cogs text-dark-pastel-green"></i>Edit</a>
@@ -93,19 +133,41 @@
                             <thead>
                                 <tr>
                                     <th class="text-left">Students</th>
-                                    {% for month in months %}
-                                        <th>{{ month }}</th>
+                                    {% for day in days %}
+                                        <th>{{ day }}</th>
                                     {% endfor %}
                                 </tr>
                             </thead>
                             <tbody>
                                 {% for student in students %}
                                     <tr>
-                                        <td class="text-left">{{ student.get_full_name }}</td>
-                                        {% for attendance in student.student_attendance.all %}
-                                        <td>-</td>
-                                        <td><i class="fas fa-check text-success"></i></td>
-                                        <td><i class="fas fa-times text-danger"></i></td>
+                                        <td class="text-left">{{ student.first_name }} {{ student.last_name }}</td>
+                                        {% for attendance in student.attendances %}
+                                            {% if attendance.come %}
+                                                <td><i class="fas fa-check text-success"></i></td>
+                                            {% elif attendance.come == '' %}
+                                                <form method="post">
+                                                    {% csrf_token %}
+                                                    <th class="text-left">
+                                                        <a  style="color: inherit;" href="#" role="button" data-toggle="dropdown" aria-expanded="false">---</a>
+                                                        <div class="dropdown-menu dropdown-menu-right">
+                                                            <input type="hidden" name="day" value="{{ attendance.day }}">
+                                                            <input type="hidden" name="student_id" value="{{ student.id }}">
+                                                            <button type="submit" name="come" value="True"><a class="dropdown-item"><i class="fas fa-check text-success"></i>Came</a></button>
+                                                            <button type="submit" name="come" value="False"><a class="dropdown-item"><i class="fas fa-times text-danger"></i>No Came</a></button>
+                                                            <div style="margin: 0px;">
+                                                                <input style="width: 180px;" type="text" name="rezone" placeholder="Rezone">
+                                                            </div>
+                                                        </div>
+                                                    </th>
+                                                </form>
+                                            {% else %}
+                                                {% if attendance.rezone != '' %}
+                                                    <td class="td"><i class="fas fa-times text-danger"></i><span class="rezone">{{ attendance.rezone }}</span></td>
+                                                {% else %}
+                                                    <td><i class="fas fa-times text-danger"></i></td>
+                                                {% endif %}
+                                            {% endif %}
                                         {% endfor %}
                                     </tr>
                                 {% endfor %}

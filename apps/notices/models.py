@@ -3,6 +3,7 @@ from apps.general.models import AbstractModel
 from apps.groups.services import normalize_text
 from apps.exams.models import ExamResult
 from django.conf import settings
+from django.core.exceptions import ValidationError
 from django_ckeditor_5.fields import CKEditor5Field
 
 
@@ -69,6 +70,10 @@ class Message(AbstractModel):
 
     def get_short_content(self):
         return self.content[:20] + '...'
+    
+    def clean(self):
+        if bool(self.sender == self.chat.sender) + bool(self.sender == self.chat.recipient) != 1:
+            raise ValidationError({'sender':'Sender is not in the chat'})
 
     def __str__(self):
         return self.content

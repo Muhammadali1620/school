@@ -1,3 +1,4 @@
+from collections.abc import Sequence
 from django.shortcuts import redirect
 from apps.notices.forms import MessageForm
 from apps.notices.models import Chat, Message
@@ -44,7 +45,7 @@ class ChatListView(LoginRequiredMixin, ListView):
         else:
             messages.error(request, 'Invalid request')
         return redirect(request.META['HTTP_REFERER'])
-
+    
 
 class NotificationTemplateView(TemplateView):
     template_name = 'notice-board.html'
