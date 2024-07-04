@@ -234,73 +234,62 @@
                </div>
                 <div class="sidebar-menu-content">
                     <ul class="nav nav-sidebar-menu sidebar-toggle-view">
-                        <li class="nav-item sidebar-nav-item">
-                            <a href="#" class="nav-link"><i class="flaticon-dashboard"></i><span>Dashboard</span></a>
-                            <ul class="nav sub-group-menu">
-                                <li class="nav-item">
-                                    <a href="{% url 'home' %}" class="nav-link"><i class="fas fa-angle-right"></i>Admin</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{% url 'users:student_dashboard' %}" class="nav-link"><i
-                                            class="fas fa-angle-right"></i>Students</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{% url 'users:parent_dashboard' %}" class="nav-link"><i class="fas fa-angle-right"></i>Parents</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{% url 'users:teacher_dashboard' %}" class="nav-link"><i
-                                            class="fas fa-angle-right"></i>Teachers</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item sidebar-nav-item">
-                            <a href="#" class="nav-link"><i class="flaticon-classmates"></i><span>Students</span></a>
-                            <ul class="nav sub-group-menu sub-group-active">
-                                <li class="nav-item">
-                                    <a href="{% url 'users:student_list' %}" class="nav-link menu-active"><i class="fas fa-angle-right"></i>All
-                                        Students</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{% url 'users:add_student' %}" class="nav-link"><i
-                                            class="fas fa-angle-right"></i>Admission Form</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{% url 'users:search_student' %}" class="nav-link"><i
-                                            class="fas fa-angle-right"></i>Student Promotion</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item sidebar-nav-item">
-                            <a href="#" class="nav-link"><i
-                                    class="flaticon-multiple-users-silhouette"></i><span>Teachers</span></a>
-                            <ul class="nav sub-group-menu">
-                                <li class="nav-item">
-                                    <a href="{% url 'users:teacher_list' %}" class="nav-link"><i class="fas fa-angle-right"></i>All
-                                        Teachers</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{% url 'users:add_teacher' %}" class="nav-link"><i class="fas fa-angle-right"></i>Add
-                                        Teacher</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{% url 'payments:teacher_payment_list' %}" class="nav-link"><i
-                                            class="fas fa-angle-right"></i>Payment</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item sidebar-nav-item">
-                            <a href="#" class="nav-link"><i class="flaticon-couple"></i><span>Parents</span></a>
-                            <ul class="nav sub-group-menu">
-                                <li class="nav-item">
-                                    <a href="{% url 'users:parent_list' %}" class="nav-link"><i class="fas fa-angle-right"></i>All
-                                        Parents</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{% url 'users:add_parent' %}" class="nav-link"><i class="fas fa-angle-right"></i>Add
-                                        Parent</a>
-                                </li>
-                            </ul>
-                        </li>
+                        {% if request.user.role == 1 %}
+                            <li class="nav-item">
+                                <a href="{% url 'home' %}" class="nav-link"><i class="flaticon-open-book"></i><span>Dashboard</span></a>
+                            </li>
+                        {% endif %}
+                        {% if request.user.role != 3 %}
+                            <li class="nav-item sidebar-nav-item">
+                                <a href="#" class="nav-link"><i class="flaticon-classmates"></i><span>Students</span></a>
+                                <ul class="nav sub-group-menu sub-group">
+                                    {% if perms.users.view_students %}
+                                        <li class="nav-item">
+                                            <a href="{% url 'users:student_list' %}" class="nav-link menu"><i class="fas fa-angle-right"></i>All Students</a>
+                                        </li>
+                                    {% endif %}
+                                    {% if perms.users.add_students %}
+                                        <li class="nav-item">
+                                            <a href="{% url 'users:add_student' %}" class="nav-link"><i class="fas fa-angle-right"></i>Admission Form</a>
+                                        </li>
+                                    {% endif %}
+                                    {% if request.user.role == 1 %}
+                                        <li class="nav-item">
+                                            <a href="{% url 'users:search_student' %}" class="nav-link"><i class="fas fa-angle-right"></i>Student Promotion</a>
+                                        </li>
+                                    {% endif %}
+                                </ul>
+                            </li>
+                        {% endif %}
+                        {% if request.user.role == 1 %}
+                            <li class="nav-item sidebar-nav-item">
+                                <a href="#" class="nav-link"><i class="flaticon-multiple-users-silhouette"></i><span>Teachers</span></a>
+                                <ul class="nav sub-group-menu">
+                                    <li class="nav-item">
+                                        <a href="{% url 'users:teacher_list' %}" class="nav-link"><i class="fas fa-angle-right"></i>All Teachers</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{% url 'users:add_teacher' %}" class="nav-link"><i class="fas fa-angle-right"></i>Add Teacher</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{% url 'payments:teacher_payment_list' %}" class="nav-link"><i class="fas fa-angle-right"></i>Payment</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        {% endif %}
+                        {% if request.student.role == 1 %}
+                            <li class="nav-item sidebar-nav-item">
+                                <a href="#" class="nav-link"><i class="flaticon-couple"></i><span>Parents</span></a>
+                                <ul class="nav sub-group-menu">
+                                    <li class="nav-item">
+                                        <a href="{% url 'users:parent_list' %}" class="nav-link"><i class="fas fa-angle-right"></i>All Parents</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{% url 'users:add_parent' %}" class="nav-link"><i class="fas fa-angle-right"></i>Add Parent</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        {% endif %}
                         <li class="nav-item sidebar-nav-item">
                             <a href="#" class="nav-link"><i class="flaticon-books"></i><span>Library</span></a>
                             <ul class="nav sub-group-menu">
@@ -314,49 +303,52 @@
                                 </li>
                             </ul>
                         </li>
-                        <li class="nav-item sidebar-nav-item">
-                            <a href="#" class="nav-link"><i class="flaticon-technological"></i><span>Acconunt</span></a>
-                            <ul class="nav sub-group-menu">
-                                <li class="nav-item">
-                                    <a href="{% url 'payments:all_fees' %}" class="nav-link"><i class="fas fa-angle-right"></i>All Fees
-                                        Collection</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{% url 'payments:all_expense' %}" class="nav-link"><i
-                                            class="fas fa-angle-right"></i>Expenses</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{% url 'payments:add_expense' %}" class="nav-link"><i class="fas fa-angle-right"></i>Add
-                                        Expenses</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item sidebar-nav-item">
-                            <a href="#" class="nav-link"><i
-                                    class="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler"></i><span>Student Group</span></a>
-                            <ul class="nav sub-group-menu">
-                                <li class="nav-item">
-                                    <a href="{% url 'student_groups:all_group' %}" class="nav-link"><i class="fas fa-angle-right"></i>All
-                                        Groups</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{% url 'student_groups:add_group' %}" class="nav-link"><i class="fas fa-angle-right"></i>Add New
-                                        Group</a>
-                                </li>
-                            </ul>
-                        </li>
+                        {% if request.role == 1 %}
+                            <li class="nav-item sidebar-nav-item">
+                                <a href="#" class="nav-link"><i class="flaticon-technological"></i><span>Acconunt</span></a>
+                                <ul class="nav sub-group-menu">
+                                    <li class="nav-item">
+                                        <a href="{% url 'payments:all_fees' %}" class="nav-link"><i class="fas fa-angle-right"></i>All Fees Collection</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{% url 'payments:all_expense' %}" class="nav-link"><i
+                                                class="fas fa-angle-right"></i>Expenses</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{% url 'payments:add_expense' %}" class="nav-link"><i class="fas fa-angle-right"></i>Add Expenses</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        {% endif %}
+                        {% if perms.groups.view_studentgroup %}
+                            <li class="nav-item sidebar-nav-item">
+                                <a href="#" class="nav-link"><i
+                                        class="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler"></i><span>Student Group</span></a>
+                                <ul class="nav sub-group-menu">
+                                    <li class="nav-item">
+                                        <a href="{% url 'student_groups:all_group' %}" class="nav-link"><i class="fas fa-angle-right"></i>All
+                                            Groups</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{% url 'student_groups:add_group' %}" class="nav-link"><i class="fas fa-angle-right"></i>Add New
+                                            Group</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        {% endif %}
                         <li class="nav-item">
-                            <a href="{% url 'subjects:subject_list' %}" class="nav-link"><i
-                                    class="flaticon-open-book"></i><span>Subject</span></a>
-                        <!-- </li>
-                        <li class="nav-item">
+                            <a href="{% url 'subjects:subject_list' %}" class="nav-link"><i class="flaticon-open-book"></i><span>Subject</span></a>
+                        </li>
+                        <!--<li class="nav-item">
                             <a href="class-routine.html" class="nav-link"><i class="flaticon-calendar"></i><span>Class
                                     Routine</span></a>
                         </li> -->
-                        <li class="nav-item">
-                            <a href="{% url 'attendances:student_attendance' %}" class="nav-link"><i
-                                    class="flaticon-checklist"></i><span>Attendance</span></a>
-                        </li>
+                        {% if request.user.role == 1 or request.user.role == 2 %}
+                            <li class="nav-item">
+                                <a href="{% url 'attendances:student_attendance' %}" class="nav-link"><i
+                                        class="flaticon-checklist"></i><span>Attendance</span></a>
+                            </li>
+                        {% endif %}
                         <li class="nav-item sidebar-nav-item">
                             <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Exam</span></a>
                             <ul class="nav sub-group-menu">

@@ -9,8 +9,8 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.views import LoginView, LogoutView
 from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from apps.users.forms import ParentRegisterForm, TeacherRegisterForm, StudentRegisterForm, AdminRegisterForm
 from django.views.generic import ListView, DetailView, CreateView, TemplateView, UpdateView, DeleteView
+from apps.users.forms import ParentRegisterForm, TeacherRegisterForm, StudentRegisterForm, AdminRegisterForm
 
 
 class UserRegisterView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
@@ -45,7 +45,12 @@ class StudentListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
             case CustomUser.Role.PARENT.value:
                 self.queryset = user.children.all()
             case CustomUser.Role.TEACHER.value:
-                 self.queryset = user.get_all_student_in_group(user)
+                self.queryset = user.get_all_student_in_group(user)
+        
+        if not self.queryset:
+            print('1')
+            return []
+
         self.filterset = StudentFilter(self.request.GET, queryset=self.queryset)
         self.queryset = self.filterset.qs
         username = self.request.GET.get('username')
@@ -63,10 +68,12 @@ class StudentListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
                                                  Q(last_name__icontains=name) |
                                                  Q(father_name__icontains=name))
         return self.queryset
+            
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['filter'] = self.filterset
+        if self.queryset != []:
+            context['filter'] = self.filterset
         return context
     
 

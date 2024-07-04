@@ -16,16 +16,18 @@ class AttendanceTemplateView(LoginRequiredMixin, PermissionRequiredMixin, Templa
     template_name = "student-attendance.html"
     context_object_name = 'attendances'
     permission_required = ('attendances.view_attendance',)
-    extra_context = {
-        'groups': StudentGroup.objects.all().select_related('subject').order_by('subject__name'),
-    }
 
     def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        if self.request.user.role == 2:
+            context['groups'] = StudentGroup.objects.filter(teacher_id=self.request.user.pk).select_related('subject').order_by('subject__name').last(),
+        else:
+            context['groups'] = StudentGroup.objects.all().select_related('subject').order_by('subject__name'),
         group_id = self.request.GET.get('group_id', '')
         year = self.request.GET.get('year', '')
         month = self.request.GET.get('month', '')
 
-        context = super().get_context_data(**kwargs)
 
         today = date.today()
         context['years'] = list(range(2024, today.year + 11))
