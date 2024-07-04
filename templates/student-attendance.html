@@ -69,7 +69,9 @@
                                 <select class="select2 form-control" name="group_id">
                                     <option value="">Select Group</option>
                                     {% for group in groups %}
-                                        <option {% if request.GET.group_id|add:"0" == group.id %} selected {% endif %} value="{{ group.id }}">{{ group }}</option>
+                                        {% for i in group %}
+                                            <option {% if request.GET.group_id|add:"0" == i.id %} selected {% endif %} value="{{ i.id }}">{{ i }}</option>
+                                        {% endfor %}
                                     {% endfor %}
                                 </select>
                             </div>

@@ -21,9 +21,9 @@ class AttendanceTemplateView(LoginRequiredMixin, PermissionRequiredMixin, Templa
         context = super().get_context_data(**kwargs)
 
         if self.request.user.role == 2:
-            context['groups'] = StudentGroup.objects.filter(teacher_id=self.request.user.pk).select_related('subject').order_by('subject__name').last(),
+            context['groups'] = list(StudentGroup.objects.filter(teacher_id=self.request.user.pk).select_related('subject').order_by('subject__name').last(),)
         else:
-            context['groups'] = StudentGroup.objects.all().select_related('subject').order_by('subject__name'),
+            context['groups'] = list(StudentGroup.objects.all().select_related('subject').order_by('subject__name')),
         group_id = self.request.GET.get('group_id', '')
         year = self.request.GET.get('year', '')
         month = self.request.GET.get('month', '')
