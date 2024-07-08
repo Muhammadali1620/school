@@ -5,8 +5,8 @@ app_name = 'payments'
 
 
 urlpatterns = [
-    path('', views.PaymentListView.as_view(), name='payment_list'),
+    path('', views.PaymentListView.as_view(), name='list_payment'),
     path('add/', views.PaymentCreateView.as_view(), name='add_payment'),
-    path('add_expense/', views.AddExpenseTemplateView.as_view(), name='add_expense'),
-    path('teacher_payment_list/', views.TeacherAllPayments.as_view(), name='teacher_payment_list'),
+    path('<int:pk>/update/', views.PaymentUpdateView.as_view(), name='update_payment'),
+    path('<int:pk>/delete/', views.PaymentDeleteView.as_view(), name='delete_payment'),
 ]

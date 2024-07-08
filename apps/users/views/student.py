@@ -48,7 +48,6 @@ class StudentListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
                 self.queryset = user.get_all_student_in_group(user)
         
         if not self.queryset:
-            print('1')
             return []
 
         self.filterset = StudentFilter(self.request.GET, queryset=self.queryset)

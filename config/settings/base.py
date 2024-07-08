@@ -4,8 +4,8 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-#(?<data>img/[a-zA-Z0-9/._-]+)
-#{% static '${data}' %}
+# (?<data>img/[a-zA-Z0-9/._-]+)
+# {% static '${data}' %}
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 

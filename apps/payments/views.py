@@ -5,27 +5,6 @@ from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMix
 from django.views.generic import TemplateView, ListView, CreateView, DeleteView, UpdateView
 
 
-# class FeesCollectionTemplateView(TemplateView):
-#     template_name = "all-fees.html"
-
-
-# class ExpenseTemplateView(TemplateView):
-#     template_name = "all-expense.html"
-
-
-# class AddExpenseTemplateView(TemplateView):
-#     template_name = "add-expense.html"
-
-
-# class TeacherAllPayments(ListView):
-#     queryset = Payment.objects.filter(teacher__isnull=False).select_related('teacher', 'teacher__subject')
-#     template_name = "teacher-payment.html"
-#     context_object_name = 'payments'
-
-
-
-
-
 class PaymentListView(ListView):
     template_name = 'all-fees.html'
 
@@ -50,9 +29,9 @@ class PaymentListView(ListView):
                   )
             )
         if search_phone_number:
-            queryset = queryset.filter(Q(student__phone_number__endswith=search_phone_number)
+            queryset = queryset.filter(Q(student__phone_number__icontains=search_phone_number)
                                        |
-                                       Q(teacher__phone_number__endswith=search_phone_number))
+                                       Q(teacher__phone_number__icontains=search_phone_number))
         return queryset
 
 
@@ -62,7 +41,7 @@ class PaymentCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView)
 
     template_name = 'admit-form.html'
     permission_required = ('payments.add_payment',)
-    success_url = reverse_lazy('payments_list-page')
+    success_url = reverse_lazy('payments:list_payment')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -72,17 +51,17 @@ class PaymentCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView)
 
 class PaymentDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = Payment
-    template_name = 'users_delete.html'
+    template_name = 'delete_page.html'
     permission_required = ('payments.delete_payment',)
-    success_url = reverse_lazy('payments_list-page')
+    success_url = reverse_lazy('payments:list_payment')
 
 
 class PaymentUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = Payment
     fields = ['teacher', 'student', 'year', 'month', 'salary', 'in_percent', ]
-    template_name = 'users_update.html'
+    template_name = 'update-form.html'
     permission_required = ('payments.change_payment',)
-    success_url = reverse_lazy('payments_list-page')
+    success_url = reverse_lazy('payments:list_payment')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

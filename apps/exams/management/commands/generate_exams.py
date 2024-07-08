@@ -11,7 +11,7 @@ class Command(BaseCommand):
             title="Экзамен по тригонометрии",
             slug="trig-exam",
             desc="Экзамен по основным понятиям тригонометрии, тригонометрическим функциям и их свойствам.",
-            limit_hour=2)
+            limit_hour='02:00')
 
         exam2 = Exam.objects.create(
             subject=Subject.objects.get(name="История"),
@@ -19,7 +19,7 @@ class Command(BaseCommand):
             title="Экзамен по истории Древнего мира",
             slug="ancient-world-history-exam",
             desc="Экзамен по основным событиям и достижениям истории Древнего мира, включая Древний Египет, Месопотамию и Древнюю Грецию.",
-            limit_hour=3)
+            limit_hour='03:00')
 
         exam3 = Exam.objects.create(
             subject=Subject.objects.get(name="Биология"),
@@ -27,6 +27,6 @@ class Command(BaseCommand):
             title="Экзамен по общей биологии",
             slug="general-biology-exam",
             desc="Экзамен по основным понятиям биологии, включая строение и функции клетки, генетику и эволюцию.",
-            limit_hour=2)
+            limit_hour='02:30')
         
         self.stdout.write(self.style.SUCCESS(f"{Exam.objects.count()}-exams created"))

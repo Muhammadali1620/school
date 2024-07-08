@@ -6,8 +6,6 @@
 {% get_language_info_list for LANGUAGES as languages %}
 <!doctype html>
 <html class="no-js" lang="">
-
-
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -31,7 +29,7 @@
     <!-- Data Table CSS -->
     <link rel="stylesheet" href="{% static 'css/jquery.dataTables.min.css' %}">
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="{% static '../static/style.css' %}">
+    <link rel="stylesheet" href="{% static 'style.css' %}">
     <!-- Modernize js -->
     <script src="{% static 'js/modernizr-3.6.0.min.js' %}"></script>
     <style>
@@ -271,9 +269,6 @@
                                     <li class="nav-item">
                                         <a href="{% url 'users:add_teacher' %}" class="nav-link"><i class="fas fa-angle-right"></i>Add Teacher</a>
                                     </li>
-                                    <li class="nav-item">
-                                        <a href="{% url 'payments:teacher_payment_list' %}" class="nav-link"><i class="fas fa-angle-right"></i>Payment</a>
-                                    </li>
                                 </ul>
                             </li>
                         {% endif %}
@@ -308,10 +303,10 @@
                                 <a href="#" class="nav-link"><i class="flaticon-technological"></i><span>Payment</span></a>
                                 <ul class="nav sub-group-menu">
                                     <li class="nav-item">
-                                        <a href="{% url 'payments:all_fees' %}" class="nav-link"><i class="fas fa-angle-right"></i>All Payment</a>
+                                        <a href="{% url 'payments:list_payment' %}" class="nav-link"><i class="fas fa-angle-right"></i>All Payment</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="{% url 'payments:add_expense' %}" class="nav-link"><i class="fas fa-angle-right"></i>Add Payment</a>
+                                        <a href="{% url 'payments:add_payment' %}" class="nav-link"><i class="fas fa-angle-right"></i>Add Payment</a>
                                     </li>
                                 </ul>
                             </li>
@@ -322,19 +317,19 @@
                                         class="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler"></i><span>Student Group</span></a>
                                 <ul class="nav sub-group-menu">
                                     <li class="nav-item">
-                                        <a href="{% url 'student_groups:all_group' %}" class="nav-link"><i class="fas fa-angle-right"></i>All
+                                        <a href="{% url 'student_groups:group_list-page' %}" class="nav-link"><i class="fas fa-angle-right"></i>All
                                             Groups</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="{% url 'student_groups:add_group' %}" class="nav-link"><i class="fas fa-angle-right"></i>Add New
+                                        <a href="{% url 'student_groups:group_create-page' %}" class="nav-link"><i class="fas fa-angle-right"></i>Add New
                                             Group</a>
                                     </li>
                                 </ul>
                             </li>
                         {% endif %}
                         <li class="nav-item">
-                            <a href="{% url 'subjects:subject_list' %}" class="nav-link"><i class="flaticon-open-book"></i><span>Subject</span></a>
-                        </li>
+                            <a href="{% url 'subjects:subject_page' %}" class="nav-link"><i class="flaticon-open-book"></i><span>Subject</span></a>
+                        </li>   
                         <!--<li class="nav-item">
                             <a href="class-routine.html" class="nav-link"><i class="flaticon-calendar"></i><span>Class
                                     Routine</span></a>
@@ -349,12 +344,10 @@
                             <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Exam</span></a>
                             <ul class="nav sub-group-menu">
                                 <li class="nav-item">
-                                    <a href="{% url 'exams:exam_schedule' %}" class="nav-link"><i class="fas fa-angle-right"></i>Exam
-                                        Schedule</a>
+                                    <a href="{% url 'exams:exam_schedule' %}" class="nav-link"><i class="fas fa-angle-right"></i>Exam Schedule</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{% url 'exams:exam_grade' %}" class="nav-link"><i class="fas fa-angle-right"></i>Exam
-                                        Grades</a>
+                                    <a href="{% url 'exams:exam_grade' %}" class="nav-link"><i class="fas fa-angle-right"></i>Exam Grades</a>
                                 </li>
                             </ul>
                         </li>

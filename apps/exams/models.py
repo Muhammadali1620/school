@@ -13,7 +13,9 @@ class Exam(AbstractModel):
     title = models.CharField(max_length=70)
     slug = models.SlugField(unique=True)
     desc = models.CharField(max_length=255)
-    limit_hour = models.PositiveSmallIntegerField()
+    limit_hour = models.TimeField()
+
+    created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         unique_together = ('ordering', 'subject')
@@ -29,6 +31,8 @@ class ExamResult(AbstractModel):
                              related_name='exam_results', related_query_name='exam_results')
     percent = models.PositiveSmallIntegerField()
     comment = models.CharField(max_length=255)
+
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.percent 
