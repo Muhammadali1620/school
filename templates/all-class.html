@@ -1,4 +1,4 @@
-{% extends 'base/base.html' %}
+{% extends 'base/admin_base.html' %}
 {% block content %}
 {% load  static %}
 <div class="dashboard-content-one">
@@ -75,15 +75,15 @@
                         <td>{{ group.week_days }}</td>
                         <td>{{ group.teacher.phone_number }}</td>
                         <td>{{ group.teacher.email }}</td>
-                        <td><a href="{% url 'group_detail-page' group.pk %}" class="btn btn-success">Detail</a></td>
+                        <td><a href="{% url 'student_groups:group_detail-page' group.pk %}" class="btn btn-success">Detail</a></td>
                         <td>
                             <div class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                                     <span class="flaticon-more-button-of-three-dots"></span>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right">
-                                    <a class="dropdown-item" href="{% url 'group_delete-page' group.pk %}"><i class="fas fa-times text-orange-red"></i>Delete</a>
-                                    <a class="dropdown-item" href="{% url 'group_update-page' group.pk %}"><i class="fas fa-cogs text-dark-pastel-green"></i>Edit</a>
+                                    <a class="dropdown-item" href="{% url 'student_groups:group_delete-page' group.pk %}"><i class="fas fa-times text-orange-red"></i>Delete</a>
+                                    <a class="dropdown-item" href="{% url 'student_groups:group_update-page' group.pk %}"><i class="fas fa-cogs text-dark-pastel-green"></i>Edit</a>
                                 </div>
                             </div>
                         </td>

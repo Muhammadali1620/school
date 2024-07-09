@@ -25,9 +25,9 @@ class GroupListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
             queryset = queryset.filter(subject__name__icontains=search_name)
 
         if teacher_name:
-            queryset = queryset.filter(Q(teacher__last_name__endswith=teacher_name)
+            queryset = queryset.filter(Q(teacher__first_name__icontains=teacher_name)
                                        |
-                                       Q(teacher__last_name__endswith=teacher_name))
+                                       Q(teacher__last_name__icontains=teacher_name))
         return queryset
 
 
